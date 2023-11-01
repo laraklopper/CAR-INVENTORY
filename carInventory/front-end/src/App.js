@@ -1,29 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';// Import the React module to use React functionalities
 
+//App function component
 export default function App() {
-  const [carData, setCarData] = useState({
+  //------------STATE VARIABLES-----------------
+  const [carData, setCarData] = useState({// State to manage the form data for adding a new car
     make: '',
     model: '',
     registration: '',
     owner: '',
   });
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(null);// State to handle errors during data fetching or car addition
+  const [isLoaded, setIsLoaded] = useState(false);// State to track whether the data has been loaded
   const [cars, setCars] = useState([]);
 
+    //===================FETCH JSON DATA=====================
+  // useEffect hook to fetch the list of cars when the component mounts
   useEffect(() => {
     async function fetchCars() {
       try {
+        //Fethc the data from the server
         const response = await fetch('http://localhost:3001/findAllCars');
-
+       
+        // Conditional rendering to check if the response is successful
         if (!response.ok) {
-          throw new Error('Failed to fetch data');
+          throw new Error('Failed to fetch data');//Throw an error message if the request is unsuccessful
         }
 
         const data = await response.json();
         setCars(data);
         setIsLoaded(true);
-      } catch (error) {
+      } 
+      catch (error) {
+       // Handle errors during data fetching
         console.error('Error fetching data:', error.message);
         setError('Failed to fetch data');
         setIsLoaded(true);
@@ -33,8 +41,10 @@ export default function App() {
     fetchCars();
   }, []);
 
+ //============================FUNCTIONS TO HANDLE REQUESTS=============================== 
   const addCar = async () => {
     try {
+     // Send a POST request to add a new car
       const response = await fetch('http://localhost:3001/addCar', {
         method: 'POST',
         headers: {
@@ -42,17 +52,20 @@ export default function App() {
         },
         body: JSON.stringify(carData),
       });
+      //Conditional rendering to check if the response is successful
 
       if (!response.ok) {
         throw new Error('Failed to add car');
       }
 
       console.log('Car added successfully');
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error adding car:', error.message);
     }
   };
-
+  
+  //===============FUNCTIONS================= 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCarData((prevData) => ({
@@ -61,6 +74,8 @@ export default function App() {
     }));
   };
 
+//======================JSX RENDERING======================
+  
   return (
     <>
       <div id='appBody'>
