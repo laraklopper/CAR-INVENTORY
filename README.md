@@ -1,6 +1,9 @@
 # LT8-Data-Interaction
 
-##
+## MONGODB
+
+MongoDB is a NoSQL database for nodejs. MongoDB uses binary JSON to store data. 
+
 
 ## LINK TO MONGODB
 
