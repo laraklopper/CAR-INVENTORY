@@ -54,9 +54,33 @@ const updateById = async (req, res) => {//Define an async function to update a s
   }
 };
 
+
+const removeById = async (req, res) => {//Define an async function to remove a car from the database
+    const { make } = req.params;//Extract the make parameter from the URL
+
+    try {
+      //Find and remove a car
+        const removedCar = await Car.findOneAndRemove({ make });
+
+      //Conditional rendering to check if the car is found
+        if (!removedCar) {
+            return res.status(404).send('Car not found');//Respond with a 404 status code and a message indicating the car is not found
+        }
+
+        res.json({ message: 'Car removed successfully' });//Respond with a JSON object containing a success message
+
+    } catch (error) {
+      //Handle errors
+        console.error('Error removing car', error.message);        // Handle errors during the removal process
+        res.status(500).send('Internal server Error');        // Handle errors during the removal process
+
+    }
+};
+
 //Export all the functions
 module.exports = {
   addCar,
   findAllCars,
   updateById,
+  removeById
 };
