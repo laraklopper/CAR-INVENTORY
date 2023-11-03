@@ -51,8 +51,8 @@ const updateById = async (req, res) => {//Define an async function to update a s
         // Respond with the updated car
         res.json(updatedCar);
     } catch (error) {
+        //Handle errors
         console.error('Error updating car', error.message);// Handle errors by logging the error,
-
         res.status(500).send('Internal server Error');// sending a 500 status code, and an error message
     }
 };
