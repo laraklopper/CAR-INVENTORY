@@ -11,6 +11,7 @@ any traditional relational database table.
 Instead of rows & columns, MongoDB used collections & documents to store data. A collections consist of a set of documents & a document consists 
 of key-value pairs which are the basic unit of data in MongoDB.
 
+### HOW TO CONNECT A NODE APP TO MONGODB
 To connect a Node.js application to MongoDB, use a library called Mongoose.  
 
 ```
@@ -33,3 +34,4 @@ mongodb+srv://larak:<password>@cluster-one.0kjnxst.mongodb.net/
 - https://expressjs.com/en/resources/middleware.html
 - https://www.javatpoint.com/mongodb-data-types
 - https://www.geeksforgeeks.org/how-to-connect-node-js-to-a-mongodb-database/
+- https://masteringjs.io/tutorials/mongoose/save
