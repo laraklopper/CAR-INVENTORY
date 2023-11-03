@@ -2,7 +2,8 @@
 
 ## TABLE OF CONTENTS
 1. [MONGODB](#mongodb)
-2. [REFERENCES](#references)
+2. 
+3. [REFERENCES](#references)
 
 ## MONGODB
 
@@ -11,6 +12,7 @@ any traditional relational database table.
 Instead of rows & columns, MongoDB used collections & documents to store data. A collections consist of a set of documents & a document consists 
 of key-value pairs which are the basic unit of data in MongoDB.
 
+## CONTROLLER FUNCTIONS
 ### HOW TO CONNECT A NODE APP TO MONGODB
 To connect a Node.js application to MongoDB, use a library called Mongoose.  
 
