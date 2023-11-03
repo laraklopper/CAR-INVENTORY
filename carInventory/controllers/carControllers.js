@@ -1,10 +1,12 @@
 const Car = require('carInventory/models/carSchema.js');// Import the Car model representing the structure of the document in the MongoDB collection
 
-// Controller function to create a new car
+// Controller function to add a new car to the collection
 const addCar = async function (req, res) {//Define an async function to add a new car 
     try {
         const newCar = new Car(req.body);// Create a new Car instance with the request body and save it to the database
         await newCar.save();
+        //the .save() Asynchronous method to save changes to the database
+        //The save() function is used to save the document to the database.
 
         res.status(201).json(newCar);// Respond with the newly created car and a 201 status code (Created)
 
