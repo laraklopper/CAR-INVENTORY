@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';// Import the React module to use React functionalities
+import './App.css';//Import CSS File
+import { updateById } from '../../controllers/carControllers';
 
-// App function component
-export default function App() {//Export default App function component
-  //==============STATE VARIABLES=================
+//App function component
+export default function App() {
+    //==============STATE VARIABLES=================
   const [carData, setCarData] = useState({// State to manage the form data for adding a new car
     make: '',
     model: '',
@@ -13,6 +15,7 @@ export default function App() {//Export default App function component
   const [isLoaded, setIsLoaded] = useState(false);// State to track whether the data has been loaded
   const [cars, setCars] = useState([]);// State to store the fetched list of cars
 
+  
   //===================FETCH JSON DATA=====================
   // useEffect hook to fetch the list of cars when the component mounts
   useEffect(() => {
@@ -21,39 +24,38 @@ export default function App() {//Export default App function component
         // Fetch data from the server
         const response = await fetch('http://localhost:3001/findAllCars');
 
-        // Conditional rendering to check if the response is successful
+       // Conditional rendering to check if the response is successful
         if (!response.ok) {
           throw new Error('Failed to fetch data');//Throw an error message if the request is unsuccessful
         }
-
+        
         const data = await response.json();// Parse the response data and update the state
-        setCars(data);
+        setCars(data);//Update the state variable cars with the parsed data 
         setIsLoaded(true);//Update the loading status to true
-      } catch (error) {
-        // Handle errors during data fetching
+      } 
+      catch (error) {
         console.error('Error fetching data:', error.message);//Display error message in the console
         setError('Failed to fetch data');//Set an error message in the error state
         setIsLoaded(true);//Update the loading status to true
       }
     }
 
-    // Invoke the fetchCars function
-    fetchCars();
-  }, []); // The empty dependency array ensures the effect runs only once on mount
+    fetchCars();//Call the fetchCars function
+  }, []);// The empty dependency array ensures the effect runs only once on mount
 
-  //============================FUNCTIONS TO HANDLE REQUESTS=============================== 
+  //=================REQUEST FUNCTIONS=================
   // Function to add a new car
   const addCar = async () => {
     try {
-      // Send a POST request to add a new car
+      // Send a POST request to the server
       const response = await fetch('http://localhost:3001/addcar', {
-        method: 'POST',//Request method
+        method: 'POST',
         headers: {
           'Content-type': 'application/json',//Type of content being passed
         },
-        body: JSON.stringify(carData),
+        body: JSON.stringify(carData),//Convert to JSON data
       });
-
+    
       //Conditional rendering to check if the response is successful
       if (!response.ok) {
         throw new Error('Failed to add car');//Throw an error message if the request is unsuccessful
@@ -61,39 +63,35 @@ export default function App() {//Export default App function component
 
       console.log('Car added successfully');
     } catch (error) {
-      // Handle errors 
-      console.error('Error adding car:', error.message);//Display error message in the console
+      //Handle errors
+      console.error('Error adding car:', error.message);//Display an error message in the console
     }
   };
 
-  //===============FUNCTIONS================= 
+   //===============FUNCTIONS================= 
   // Function to handle input changes in the form
   const handleInputChange = (event) => {
-    const { name, value } = event.target;  // Extract the name and value from the event target (input element)
+    const { name, value } = event.target;// Extract the name and value from the event target (input element)
+    
+    setCarData((prevData) => ({  // Update the carData  state variable  with the new input value
 
-
-    // Update the carData state with the new input value
-    setCarData((prevData) => ({  // Update the carData state using the previous state (prevData)
-      // Spread the previous state to keep existing values
-      ...prevData,
-      [name]: value,    // Update the value of the specified input field
+      ...prevData, // Update the carData state using the previous state (prevData)
+      //The spread operator (...) is used to create a shallow copy of the previous state.
+      [name]: value,// Update the value of the specified input field
     }));
   };
 
-  //============JSX RENDERING=============
+  //=====================JSX RENDERING=========================
+  
   return (
     <>
-    {/* App body */}
       <div id='appBody'>
-        {/* header */}
         <header id='header'>
           <h1>CARS</h1>
         </header>
-        {/* section1 */}
         <section id='section1'>
           <form id='form' onSubmit={addCar}>
-            {/* Input field for car make */}
-            <label>
+            <label className='label'>
               make
               <input
                 type='text'
@@ -103,8 +101,6 @@ export default function App() {//Export default App function component
                 onChange={handleInputChange}
               />
             </label>
-            {/* Additional input fields for model, registration, and owner */}
-            {/* Input field for car model */}
             <label className='label'>
               model
               <input
@@ -114,7 +110,6 @@ export default function App() {//Export default App function component
                 onChange={handleInputChange}
               />
             </label>
-            {/* Input field for car registration */}
             <label className='label'>
               registration
               <input
@@ -124,7 +119,6 @@ export default function App() {//Export default App function component
                 onChange={handleInputChange}
               />
             </label>
-            {/* Input field for car owner */}
             <label>
               owner
               <input
@@ -134,28 +128,25 @@ export default function App() {//Export default App function component
                 onChange={handleInputChange}
               />
             </label>
-            {/* Button to add a new car */}
             <button type='submit' className='button'>
               ADD CAR
             </button>
           </form>
 
-          {/* Display fetched cars */}
           <div>
-            <h2>Fetched Cars:</h2>
+            <h2 className='h2'>Fetched Cars:</h2>
             {isLoaded ? (
               <ul>
-                {/* Map through the fetched cars and display their details */}
                 {cars.map((car) => (
                   <li key={car._id}>
-                    {car.make}  {car.model} {car.registration}  {car.owner}
+                    {car.make} {car.model} {car.registration} {car.owner}
+                    <button onClick={() => updateById(car._id)}>Update</button>
                   </li>
                 ))}
               </ul>
             ) : (
               <p>Loading...</p>
             )}
-            {/* Display error if there's an issue with data fetching */}
             {error && <p>{error}</p>}
           </div>
         </section>
