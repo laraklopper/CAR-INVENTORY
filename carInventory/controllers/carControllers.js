@@ -54,7 +54,7 @@ const updateById = async (req, res) => {//Define an async function to update a s
   }
 };
 
-
+// Controller function to remove a single car by Id
 const removeById = async (req, res) => {//Define an async function to remove a car from the database
     const { make } = req.params;//Extract the make parameter from the URL
 
