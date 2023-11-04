@@ -2,8 +2,7 @@
 
 ## TABLE OF CONTENTS
 1. [MONGODB](#mongodb)
-2. [CONTROLLER FUNCTIONS](#controller-functions)
-3. [REFERENCES](#references)
+2. [REFERENCES](#references)
 
 ## MONGODB
 
@@ -29,8 +28,6 @@ mongoose.connect("mongodb://localhost:27017/collectionName", {
 ### LINK TO MONGODB DATABASE
 
 mongodb+srv://larak:<password>@cluster-one.0kjnxst.mongodb.net/
-## CONTROLLER FUNCTIONS
-
 
 ## REFERENCES
 - https://www.npmjs.com/package/dotenv
