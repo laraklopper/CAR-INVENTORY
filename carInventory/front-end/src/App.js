@@ -96,28 +96,30 @@ export default function App() {//Export default App function component
 
     //--------------------DELETE REQUESTS---------------------
     //Function to remove a car
-  // const removeCar = async (carId) => {//Define an asynchronous function to remove a car from the list
-  //   try {
-  //       //Send request
-  //     const response = await fetch(`http://localhost:3001/removeById/${carId}`, {
-  //       method: 'DELETE',//Request method
-  //       headers: {
-  //         'Content-type': 'application/json',//Type of content being passed
-  //       },
-  //       body: JSON.stringify(carData),//Convert carData to a JSON string and include it in the request body
-  //     });
+  const removeCar = async (carId) => {//Define an asynchronous function to remove a car from the list
+    try {
+        //Send request
+      const response = await fetch(`http://localhost:3001/removeById/${carId}`, {
+        method: 'DELETE',//Request method
+        headers: {
+          'Content-type': 'application/json',//Type of content being passed
+        },
+        body: JSON.stringify(carData),//Convert carData to a JSON string and include it in the request body
+      });
 
-  //    //Conditional rendering to check if the response is successful
-  //     if (!response.ok) {
-  //       throw new Error('Failed to add car');//Throw an error message if the request is unsuccessful
-  //     }
-
-  //     console.log('Car removed successfully');//If the request is successful log a success message
-  //   } 
-  //   catch (error) {
-  //     console.error('Error removing car:', error.message);//Display error message in the console
-  //   }
-  // };
+     //Conditional rendering to check if the response is successful
+      if (!response.ok) {
+        throw new Error('Failed to add car');//Throw an error message if the request is unsuccessful
+      }
+      const responseData = await response.json()
+      console.log(responseData);    
+      setCars((prevCars) => prevCars.filter((car) => car._id !== carId));
+      console.log('Car removed successfully');//If the request is successful log a success message
+    } 
+    catch (error) {
+      console.error('Error removing car:', error.message);//Display error message in the console
+    }
+  };
     
 //===================EVENT LISTENERS====================
      // Function to handle input changes in the form
@@ -201,9 +203,10 @@ export default function App() {//Export default App function component
                 <li key={car._id}>
                   {car.make} {car.model} {car.registration} {car.owner}
                   {/* Button to update the car */}
-                  {/* <button onClick={() =>updateCar}>Update</button> */}
+                   <button onClick={() =>updateCar}>Update</button> 
+           <inp
                   {/* Button to remove a car */}
-                  {/* <button onClick={() => removeCar(car._id)}>DELETE</button> */}
+                   <button onClick={() => removeCar(car._id)}>DELETE</button> 
                 </li>
               ))}
             </ul>
