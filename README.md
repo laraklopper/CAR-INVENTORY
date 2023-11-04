@@ -45,3 +45,4 @@ mongodb+srv://larak:<password>@cluster-one.0kjnxst.mongodb.net/
 - https://www.javatpoint.com/mongodb-data-types
 - https://www.geeksforgeeks.org/how-to-connect-node-js-to-a-mongodb-database/
 - https://masteringjs.io/tutorials/mongoose/save
+- https://www.tutorialspoint.com/mongodb/index.htm
