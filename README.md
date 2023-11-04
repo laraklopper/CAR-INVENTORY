@@ -2,7 +2,7 @@
 
 ## TABLE OF CONTENTS
 1. [MONGODB](#mongodb)
-2. 
+2. [CONTROLLER FUNCTIONS](#controller-functions)
 3. [REFERENCES](#references)
 
 ## MONGODB
