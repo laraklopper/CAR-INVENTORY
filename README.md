@@ -2,7 +2,8 @@
 
 ## TABLE OF CONTENTS
 1. [MONGODB](#mongodb)
-2. [REFERENCES](#references)
+2. [DEPENDENCIES](#dependencies)
+3. [REFERENCES](#references)
 
 ## MONGODB
 
@@ -28,6 +29,15 @@ mongoose.connect("mongodb://localhost:27017/collectionName", {
 ### LINK TO MONGODB DATABASE
 
 mongodb+srv://larak:<password>@cluster-one.0kjnxst.mongodb.net/
+
+## DEPENDENCIES
+
+- express
+- mongoose
+- cors
+- body-parser
+- nodemon
+- dotenv
 
 ## REFERENCES
 - https://www.npmjs.com/package/dotenv
