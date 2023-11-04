@@ -66,7 +66,7 @@ app.use(cors());// Use the 'cors' middleware
 app.post('/addCar', carController.addCar);
 app.get('/findAllCars', carController.findAllCars);
 app.put('/updateCarById/:make', carController.updateById);
-
+app.delete('/removeCarById/:carId', carController.removeById);//Route to remove car by ID
 //================START THE SERVER=========================
 // Start the Express server and listen on the specified port
 app.listen(port, () => {
