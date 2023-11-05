@@ -22,7 +22,7 @@ export default function App() {
   const [newModel, setNewModel] = useState('');
   const [newRegistration, setNewRegistration] = useState('');
   const [newOwner, setNewOwner] = useState('');
-//  const [update, setUpdate] = useState(false);
+ const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     async function fetchCars() {
@@ -214,20 +214,14 @@ export default function App() {
                 <li key={car._id} className='carsList'>
                   <label className='dataLabel'>MAKE:</label>
                   {car.make}
-                  <button onClick={() => updateCarMake(car._id, newMake)}>
-                    Update
-                  </button>
                   <input
                     type='text'
                     onChange={(e) => setNewMake(e.target.value)}
                     value={newMake}
                     className='changeInput'
-                  /><br />
+                  />
                   <label className='dataLabel'>MODEL:</label>
                   {car.model}
-                  <button>
-                    Update
-                  </button>
                   <input
                     type='text'
                     onChange={(e) => setNewModel(e.target.value)}
@@ -247,9 +241,7 @@ export default function App() {
                   /><br />
                   <label>OWNER:</label>
                   {car.owner}
-                  <button>
-                    Update
-                  </button>
+                  
                   <input
                     type='text'
                     onChange={(e) => setNewOwner(e.target.value)}
