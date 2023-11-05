@@ -71,28 +71,28 @@ export default function App() {//Export default App function component
 
 //---------------------PUT REQUEST-----------------------------------------
 //Function to update a car
-  // const updateCar = async (carId) => {//Define an asynchronous function to edit car data
-  //   try {
-  //     const response = await fetch(`http://localhost:3001/updateCarById/${carId}`, {
-  //       method: 'PUT',//Request method
-  //       headers: {
-  //         'Content-type': 'application/json',//Type of content being passed
-  //       },
-  //       body: JSON.stringify(carData),// Convert carData to a JSON string and include it in the request body
-  //     });
+  const updateCar = async (carId) => {//Define an asynchronous function to edit car data
+    try {
+      const response = await fetch(`http://localhost:3001/updateCarById/${carId}`, {
+        method: 'PUT',//Request method
+        headers: {
+          'Content-type': 'application/json',//Type of content being passed
+        },
+        body: JSON.stringify(carData),// Convert carData to a JSON string and include it in the request body
+      });
 
-  //   //Conditional rendering to check if the response is successful
-  //     if (!response.ok) {
-  //       throw new Error('Failed to add car');//Throw an error message if the request is unsuccessful
-  //     }
+    //Conditional rendering to check if the response is successful
+      if (!response.ok) {
+        throw new Error('Failed to add car');//Throw an error message if the request is unsuccessful
+      }
 
-  //     console.log('Car updated successfully');//If the request is successful log a success message in the console
-  //   } 
-  //   catch (error) {
-  //       //Handle errors
-  //     console.error('Error updating car', error.message);//Display error message in the console
-  //   }
-  // };
+      console.log('Car updated successfully');//If the request is successful log a success message in the console
+    } 
+    catch (error) {
+        //Handle errors
+      console.error('Error updating car', error.message);//Display error message in the console
+    }
+  };
 
     //--------------------DELETE REQUESTS---------------------
     //Function to remove a car
