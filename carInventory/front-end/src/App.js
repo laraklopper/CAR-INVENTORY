@@ -13,7 +13,7 @@ export default function App() {//Export default App function component
   const [error, setError] = useState(null);// State to handle errors during data fetching or car addition
   const [isLoaded, setIsLoaded] = useState(false);// State to track whether the data has been loaded
   const [cars, setCars] = useState([]);// State to store the fetched list of cars
-    
+    const [update, setUpdate] = useState(false);
   //===================FETCH JSON DATA=====================
   // useEffect hook to fetch the list of cars when the component mounts
   useEffect(() => {
@@ -203,11 +203,8 @@ export default function App() {//Export default App function component
                 <li key={car._id}>
                   {car.make} {car.model} {car.registration} {car.owner}
                   {/* Button to update the car */}
-                   <button onClick={() =>updateCar}>Update</button> 
-           <inp
-                  {/* Button to remove a car */}
-                   <button onClick={() => removeCar(car._id)}>DELETE</button> 
-                </li>
+                  <Button variant="primary" onClick={updateCar}>
+              {update ? 'EXIT' : 'UPDATECAR'}
               ))}
             </ul>
           ) : (
