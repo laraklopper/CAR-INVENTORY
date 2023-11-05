@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Header from './components/Header';
+import Button from 'react-bootstrap/Button';
 
+//App function component
 export default function App() {
   const [carData, setCarData] = useState({
     make: '',
@@ -16,6 +22,7 @@ export default function App() {
   const [newModel, setNewModel] = useState('');
   const [newRegistration, setNewRegistration] = useState('');
   const [newOwner, setNewOwner] = useState('');
+//  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     async function fetchCars() {
@@ -115,16 +122,23 @@ export default function App() {
     }));
   };
 
+//==============JSX Rendering===========
+
   return (
     <>
-      <div id='appBody'>
-        <header id='header'>
-          <h1>CARS</h1>
-        </header>
+      <Container>
+          {/* Header */}
+         <Header/>
+         {/* section1 */}
         <section id='section1'>
-          <form id='form' onSubmit={(e) => { e.preventDefault(); addCar(); }}>
+          <form id='form' onSubmit={addCar}>
+            {/* Row 2 */}
+            <Row>
+            {/* Input field for car make */}
+            <Col  className='formCol'>
+            
             <label className='formLabel'>
-              make
+             <p className='labelText'>MAKE:</p>
               <input
                 type='text'
                 className='formInput'
@@ -133,18 +147,24 @@ export default function App() {
                 onChange={handleInputChange}
               />
             </label>
+              </Col>
+            {/* Input field for car model */}
+            <Col md={3} className='formCol'>            
             <label className='formLabel'>
-              model
+             <p className='labelText'>MODEL:</p> 
               <input
-                className='formInput'
+              className='formInput'
                 type='text'
                 name='model'
                 value={carData.model}
                 onChange={handleInputChange}
               />
             </label>
+            </Col>
+            {/* Input field for car registration */}
+            <Col className='formCol'>
             <label className='formLabel'>
-              registration
+              <p className='labelText'>REGISTRATION:</p>
               <input
                 className='formInput'
                 type='text'
@@ -153,8 +173,11 @@ export default function App() {
                 onChange={handleInputChange}
               />
             </label>
+            </Col>
+            {/* Input field for car owner */}
+          <Col  className='formCol'>
             <label className='formLabel'>
-              owner
+              <p className='labelText'>OWNER:</p>
               <input
                 className='formInput'
                 type='text'
@@ -163,13 +186,28 @@ export default function App() {
                 onChange={handleInputChange}
               />
             </label>
-            <button type='submit' id='submitBtn'>
-              ADD CAR
-            </button>
-          </form>
+          </Col>
+          </Row>
+          {/* Row 3 */}
+          <Row>
+            <Col className='col'>
+                {/* Button to add a new car */}
+                <Button variant="primary" id='submitBtn' type='submit'>ADD CAR</Button>
+            </Col>
+          </Row>
+          </form>         
         </section>
+        {/* section2 */}
         <section id='section2'>
-          <h2 className='h2'>Fetched Cars:</h2>
+          {/* Display fetched cars */}
+          {/* Row 4 */}
+          <Row>
+            <Col>
+              <h2 className='h2'>Fetched Cars:</h2>
+            </Col>
+          </Row>
+ {/* Row 5 */}
+        <Row>
           {isLoaded ? (
             <ul>
               {cars.map((car) => (
@@ -227,7 +265,7 @@ export default function App() {
           )}
           {error && <p>{error}</p>}
         </section>
-      </div>
+      </Container>
     </>
   );
 }
