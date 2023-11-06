@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';// Import the React module to use React functionalities
 import './App.css';//Import CSS File
+import Header from './components/Header';//Import Header function component
+import Form from './components/Form';//Import Form function component
+import UpdateForm from './components/UpdateForm';//Import UpdateForm function component
+import Container from 'react-bootstrap/Container';//Import Bootstrap Container
+import Row from 'react-bootstrap/Row';//Import Bootstrap Row 
+import Col from 'react-bootstrap/Col';//Import Bootstrap Colomn
+import Button from 'react-bootstrap/Button';//Import Bootstrap button component
 
 // App function component
 export default function App() {//Export default App function component
@@ -40,7 +47,7 @@ export default function App() {//Export default App function component
       catch (error) {
         // Handle errors during data fetching
         console.error('Error fetching data:', error.message);//Display error message in the console
-        setError('Failed to fetch data');//Set an error message in the error state
+        setError('Failed to fetch data:', error.message);//Set an error message in the error state
         setIsLoaded(true);//Update the loading status to true
       }
     }
@@ -53,7 +60,7 @@ export default function App() {//Export default App function component
 //Function to add a new car
   const addCar = async () => {
     try {
-      const response = await fetch('http://localhost:3001/addcar', {
+      const response = await fetch('http://localhost:3001/addcar', {//Define an async function to add a car 
         method: 'POST',//Request method
         headers: {
           'Content-type': 'application/json',//Type of content being passed
@@ -83,7 +90,12 @@ export default function App() {//Export default App function component
         headers: {
           'Content-type': 'application/json',//Type of content being passed
         },
-        body: JSON.stringify(carData),// Convert carData to a JSON string and include it in the request body
+        body: JSON.stringify({        // Convert the data to be updated into a JSON string
+          make: newMake,// Updated car make
+          model: newModel,// Updated car make
+          registration: newRegistration,// Updated car registration
+          owner: newOwner,// Updated car owner
+        }),
       });
 
     //Conditional rendering to check if the response is successful
@@ -96,6 +108,9 @@ export default function App() {//Export default App function component
     catch (error) {
         //Handle errors
       console.error('Error updating car', error.message);//Display error message in the console
+    setError('Error updating car details', error.message);//Log errors during the update process
+
+          
     }
   };
 
@@ -109,16 +124,18 @@ export default function App() {//Export default App function component
         headers: {
           'Content-type': 'application/json',//Type of content being passed
         },
-        body: JSON.stringify(carData),//Convert carData to a JSON string and include it in the request body
       });
 
+          
      //Conditional rendering to check if the response is successful
       if (!response.ok) {
         throw new Error('Failed to add car');//Throw an error message if the request is unsuccessful
-      }
-      const responseData = await response.json()
-      console.log(responseData);    
-      setCars((prevCars) => prevCars.filter((car) => car._id !== carId));
+      }          
+      // console.log(responseData);
+          
+      setCars((prevCars) => // Update the 'cars' state 
+      //prevCars represents the previous state of the cars variable
+          prevCars.filter((car) => car._id !== carId));//Filter out the array of cars
       console.log('Car removed successfully');//If the request is successful log a success message
     } 
     catch (error) {
@@ -137,87 +154,112 @@ export default function App() {//Export default App function component
     }));
   };
 
+//Toggle function to update the car
+  const updateCar = () => {
+    setUpdate(!update)
+  };
+      
     //=================JSX RENDERING===================
   
     return (
     <>
-  {/* App body */}
-      <div id='appBody'>
-      {/* Header */}
-        <header id='header'>
-          <h1>CARS</h1>
-        </header>
-      {/* section1 */}
+   {/* App Container */}
+      <Container id='appContainer'>
+        {/* Header */}
+       <Header/>
+        {/* section1 */}
         <section id='section1'>
-          <form id='form' onSubmit={addCar}>
-      {/* Input field for car make */}
-            <label className='label'>
-              make
-              <input
-                type='text'
-                className='input'
-                name='make'
-                value={carData.make}
-                onChange={handleInputChange}
-              />
-            </label>
-            {/* Input field for car make */}
-            <label className='label'>
-              model
-              <input
-                type='text'
-                name='model'
-                value={carData.model}
-                onChange={handleInputChange}
-              />
-            </label>
-            {/* Input field for car registration */}
-            <label className='label'>
-              registration
-              <input
-                type='text'
-                name='registration'
-                value={carData.registration}
-                onChange={handleInputChange}
-              />
-            </label>
-            {/* Input field for car owner */}
-            <label>
-              owner
-              <input
-                type='text'
-                name='owner'
-                value={carData.owner}
-                onChange={handleInputChange}
-              />
-            </label>
-            {/* Button to add a new car */}
-            <button type='submit' className='button'>
-              ADD CAR
-            </button>
-          </form>
+          <Form
+          carData={carData}
+          handleInputChange={handleInputChange}
+          addCar={addCar}
+          />            
         </section>
-             {/* section2 */}   
-        <section id='section2'>
+        {/* section2 */}
+          <section id='section2'>
+          
           {/* Display fetched cars */}
-          <h2 className='h2'>Fetched Cars:</h2>
-          {isLoaded ? (
-            <ul>
-          {/* Map through the fetched cars and display their details */}
-              {cars.map((car) => (
-                <li key={car._id}>
-                  {car.make} {car.model} {car.registration} {car.owner}
-                  {/* Button to update the car */}
-                  <Button variant="primary" onClick={updateCar}>
-              {update ? 'EXIT' : 'UPDATECAR'}
-              ))}
-            </ul>
-          ) : (
-            <p>Loading...</p>
-          )}
-          {error && <p>{error}</p>}
+          {/* Row 4 */}
+          <Row>
+            <Col>
+              <h2 className='h2'>Fetched Cars:</h2>
+            </Col>
+          </Row>
+         
+            
+            {isLoaded ? (
+              <ul id='list'>                
+                {/* Map through the fetched cars and display their details */}
+                {cars.map((car) => (
+                  <li 
+                  key={car._id}
+                  className='carsList'
+                  >
+                    {/* Row 5 */}
+                    <Row id='row5'>
+                      <Col className='carData'>
+                        {/* car make */}
+                        <label className='dataLabel'>MAKE:</label><p className='outputText'>{car.make} </p>
+                        </Col>
+                      <Col className='carData' >
+                       <label className='dataLabel'>MODEL:</label><p className='outputText'>{car.model}</p>
+                      </Col>
+                      <Col>
+                      
+                      </Col>
+                    </Row>
+                      {/* car model */}
+                      {/* Row 6 */}
+                      <Row>
+                      <Col className='carData'>
+                        <label className='dataLabel'>REGISTRATION:</label><p className='outputText'>{car.registration}</p>
+                      </Col>
+                      <Col className='carData'>
+                        <label className='dataLabel'>OWNER:</label><p className='outputText'>{car.owner}</p>
+                      </Col>
+                      <Col>
+                    {/* Button to remove car from the list */}
+                              <Button variant="primary" id='removeBtn'
+                          onClick={() => removeCar(car._id)}
+                        >
+                          REMOVE CAR
+                        </Button>
+                            </Col>
+                      </Row>
+                    {/* Row 7 */}
+                    <Row>
+                      <Col className='updateOpt' >
+                        {/* Button to toggle update form */}
+                        <Button variant="primary" onClick={updateCar}> 
+                        {update ? 'EXIT UPDATE' : 'UPDATECAR'}</Button>
+                      </Col>
+                    </Row>
+                    <div className='update'>
+                      {update && 
+                  <UpdateForm 
+                      newMake={newMake}
+                      setNewMake={setNewMake}
+                      newModel={newModel}
+                      setNewModel={setNewModel}
+                      newRegistration={newRegistration}
+                      setNewRegistration={setNewRegistration}
+                      newOwner={newOwner}
+                      setNewOwner={setNewOwner}
+                      updateCarDetails={() => updateCarDetails(car._id)}
+                      />
+                      }
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Loading...</p>
+            )}
+            {/* Display error if there's an issue with data fetching */}
+            {error && <p>{error}</p>}
+           
         </section>
-      </div>
+      </Container>
     </>
   );
 }
