@@ -13,8 +13,13 @@ export default function App() {//Export default App function component
   const [error, setError] = useState(null);// State to handle errors during data fetching or car addition
   const [isLoaded, setIsLoaded] = useState(false);// State to track whether the data has been loaded
   const [cars, setCars] = useState([]);// State to store the fetched list of cars
-    const [update, setUpdate] = useState(false);
-  //===================FETCH JSON DATA=====================
+  const [update, setUpdate] = useState(false);//State to manage display of the update form      
+  const [newMake, setNewMake] = useState('');//State to store updated car make
+  const [newModel, setNewModel] = useState('');//state to store updated car model
+  const [newRegistration, setNewRegistration] = useState('');// State to store updated car registration
+  const [newOwner, setNewOwner] = useState('');// State to store updated car owner
+  
+      //===================FETCH JSON DATA=====================
   // useEffect hook to fetch the list of cars when the component mounts
   useEffect(() => {
     async function fetchCars() {//Define asynchronous function to fetch carData
@@ -73,7 +78,7 @@ export default function App() {//Export default App function component
 //Function to update a car
   const updateCar = async (carId) => {//Define an asynchronous function to edit car data
     try {
-      const response = await fetch(`http://localhost:3001/updateCarById/${carId}`, {
+      const response = await fetch(`http://localhost:3001/updateByMake/${carMake}`, {
         method: 'PUT',//Request method
         headers: {
           'Content-type': 'application/json',//Type of content being passed
