@@ -98,10 +98,11 @@ export default function App() {//Export default App function component
           'Content-type': 'application/json',//Type of content being passed 
         },
         body: JSON.stringify({        // Convert the data to be updated into a JSON string
-          make: newMake,// Updated car make
-          model: newModel,// Updated car make
-          registration: newRegistration,// Updated car registration
-          owner: newOwner,// Updated car owner
+            // Only include fields with new values, keep the rest unchanged
+          ...(newMake && { make: newMake }),
+          ...(newModel && { model: newModel }),
+          ...(newRegistration && { registration: newRegistration }),
+          ...(newOwner && { owner: newOwner }),
         }
         )
       })
@@ -110,6 +111,30 @@ export default function App() {//Export default App function component
       if (!response.ok) {
         throw new Error('Failed to update car details')//Throw an error message if the request is unsuccessful
       }
+
+      
+      // Update the local state with modified car details
+      setCars((prevCars) =>
+        prevCars.map((car) =>
+          // Check if the current car's ID matches the ID of the car being updated (carToUpdate)
+          car._id === carToUpdate 
+            // If it's the car to update, create a new object with updated properties
+              ? {...car,
+              // Update only the fields with new values, keep the rest unchanged
+              ...(newMake && { make: newMake }),//Logic to check the newMake
+              ...(newModel && { model: newModel }),//Logic to check the newModel
+              ...(newRegistration && { registration: newRegistration }),//Logic to check the newRegistration
+              ...(newOwner && { owner: newOwner }),//Logic to check the newOwner
+               } 
+            : car   // If it's not the car to update, keep the current car object unchanged     
+        )
+      );
+      // Reset the update state and clear the update form
+            setUpdate(false); // Hide the update form
+            setNewMake(''); // Clear the newMake input field
+            setNewModel(''); // Clear the newModel input field
+            setNewRegistration(''); // Clear the newRegistration input field
+            setNewOwner(''); // Clear the newOwner input field
 
       console.log('Car details successfully updated');// Log a success message if the update request is successful
     }
