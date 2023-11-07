@@ -8,9 +8,10 @@ import Row from 'react-bootstrap/Row';//Import Bootstrap Row
 import Col from 'react-bootstrap/Col';//Import Bootstrap Colomn
 import Button from 'react-bootstrap/Button';//Import Bootstrap button component
 
+
 // App function component
 export default function App() {//Export default App function component
-      //==============STATE VARIABLES=================
+  //==============STATE VARIABLES=================
   const [carData, setCarData] = useState({// State to manage the form data for adding a new car
     make: '',
     model: '',
@@ -20,47 +21,52 @@ export default function App() {//Export default App function component
   const [error, setError] = useState(null);// State to handle errors during data fetching or car addition
   const [isLoaded, setIsLoaded] = useState(false);// State to track whether the data has been loaded
   const [cars, setCars] = useState([]);// State to store the fetched list of cars
-  const [update, setUpdate] = useState(false);//State to manage display of the update form      
+  const [update, setUpdate] = useState(false);//State to manage display of the update form 
   const [newMake, setNewMake] = useState('');//State to store updated car make
   const [newModel, setNewModel] = useState('');//state to store updated car model
   const [newRegistration, setNewRegistration] = useState('');// State to store updated car registration
   const [newOwner, setNewOwner] = useState('');// State to store updated car owner
-  
-      //===================FETCH JSON DATA=====================
+  const [carToUpdate, setCarToUpdate] = useState(null);// Track the ID of the car for the update form
+
+
+
+  //===================FETCH JSON DATA=====================
   // useEffect hook to fetch the list of cars when the component mounts
   useEffect(() => {
-    async function fetchCars() {//Define asynchronous function to fetch carData
+    async function fetchCars() {//Define asynchronous function to fetch data
       try {
-      // Fetch data from the server
+        // Fetch data from the server
         const response = await fetch('http://localhost:3001/findAllCars');
 
-  // Conditional rendering to check if the response is successful
+        // Conditional rendering to check if the response is successful
         if (!response.ok) {
           throw new Error('Failed to fetch data');//Throw an error message if the request is unsuccessful
         }
 
-
-      const data = await response.json();// Parse the response data and update the state
+        const data = await response.json();// Parse the response data and update the state
         setCars(data);//Update the state variable cars with the parsed data 
         setIsLoaded(true);//Update the loading status to true
       } 
       catch (error) {
         // Handle errors during data fetching
         console.error('Error fetching data:', error.message);//Display error message in the console
-        setError('Failed to fetch data:', error.message);//Set an error message in the error state
+        setError('Failed to fetch data');//Set an error message in the error state
         setIsLoaded(true);//Update the loading status to true
       }
     }
 
-    fetchCars(); // Invoke the fetchCars function
-  }, []);// The empty dependency array ensures the effect runs only once on mount
+    // Invoke the fetchCars function
+    fetchCars();
+  }, []); // The empty dependency array ensures the effect runs only once on mount
 
-      //============================FUNCTIONS TO HANDLE REQUESTS=============================== 
-    //--------------------------POST REQUEST-------------------------------
-//Function to add a new car
-  const addCar = async () => {
+  //============================FUNCTIONS TO HANDLE REQUESTS===============================
+  //--------------------------POST REQUEST-------------------------------
+
+  // Function to add a new car
+  const addCar = async () => {//Define an async function to add a car 
     try {
-      const response = await fetch('http://localhost:3001/addcar', {//Define an async function to add a car 
+      // Send a POST request to add a new car
+      const response = await fetch('http://localhost:3001/addCar', {
         method: 'POST',//Request method
         headers: {
           'Content-type': 'application/json',//Type of content being passed
@@ -73,52 +79,53 @@ export default function App() {//Export default App function component
         throw new Error('Failed to add car');//Throw an error message if the request is unsuccessful
       }
 
-      console.log('Car added successfully');//If the request is successful log a success message in the console
+      console.log('Car added successfully');//If the request is successful log a success message
     } 
     catch (error) {
-        //Handle errors
+      // Handle errors 
       console.error('Error adding car:', error.message);//Display error message in the console
     }
   };
 
-//---------------------PUT REQUEST-----------------------------------------
-//Function to update a car
-  const updateCar = async (carId) => {//Define an asynchronous function to edit car data
+  //---------------------PUT REQUESTS-------------------
+  // Function to update car details
+  const updateCarDetails = async (carData) => {//Define an async function to update car details
     try {
-      const response = await fetch(`http://localhost:3001/updateByMake/${carMake}`, {
+      //Send a request to the server
+      const response = await fetch(`http://localhost:3001/updateById/${carData}`, {
         method: 'PUT',//Request method
         headers: {
-          'Content-type': 'application/json',//Type of content being passed
+          'Content-type': 'application/json',//Type of content being passed 
         },
         body: JSON.stringify({        // Convert the data to be updated into a JSON string
           make: newMake,// Updated car make
           model: newModel,// Updated car make
           registration: newRegistration,// Updated car registration
           owner: newOwner,// Updated car owner
-        }),
-      });
+        }
+        )
+      })
 
-    //Conditional rendering to check if the response is successful
+      //Conditional rendering to check if the response is successful
       if (!response.ok) {
-        throw new Error('Failed to add car');//Throw an error message if the request is unsuccessful
+        throw new Error('Failed to update car details')//Throw an error message if the request is unsuccessful
       }
 
-      console.log('Car updated successfully');//If the request is successful log a success message in the console
-    } 
-    catch (error) {
-        //Handle errors
-      console.error('Error updating car', error.message);//Display error message in the console
-    setError('Error updating car details', error.message);//Log errors during the update process
-
-          
+      console.log('Car details successfully updated');// Log a success message if the update request is successful
     }
-  };
+    catch (error) {
+      //Error handling
+      console.error('Error updating car', error.message);//Display error message in the console
+      setError('Error updating car details', error.message);//Log errors during the update process
+    }
 
-    //--------------------DELETE REQUESTS---------------------
-    //Function to remove a car
+  }
+
+//-----------------DELETE REQUEST--------------------------
+  //Function to remove a car
   const removeCar = async (carId) => {//Define an asynchronous function to remove a car from the list
     try {
-        //Send request
+      //Send delete request to server
       const response = await fetch(`http://localhost:3001/removeById/${carId}`, {
         method: 'DELETE',//Request method
         headers: {
@@ -126,44 +133,49 @@ export default function App() {//Export default App function component
         },
       });
 
-          
-     //Conditional rendering to check if the response is successful
+      //Conditional rendering to check if the response is successful
       if (!response.ok) {
         throw new Error('Failed to add car');//Throw an error message if the request is unsuccessful
-      }          
-      // console.log(responseData);
-          
+      }
+  
+      
       setCars((prevCars) => // Update the 'cars' state 
       //prevCars represents the previous state of the cars variable
           prevCars.filter((car) => car._id !== carId));//Filter out the array of cars
       console.log('Car removed successfully');//If the request is successful log a success message
-    } 
+    }
     catch (error) {
+      setError('Error removing car', error)
       console.error('Error removing car:', error.message);//Display error message in the console
     }
   };
-    
-//===================EVENT LISTENERS====================
-     // Function to handle input changes in the form
+
+ 
+  //===============EVENT LISTENERS================= 
+  // Function to handle input changes in the form
   const handleInputChange = (event) => {
-    const { name, value } = event.target; // Extract the name and value from the event target (input element)
-    setCarData((prevData) => ({// Update the carData state with the new input value
-        // Spread the previous state to keep existing values
-      ...prevData,// Update the carData state using the previous state (prevData)
-      [name]: value, // Update the value of the specified input field
+    const { name, value } = event.target;  // Extract the name and value from the event target (input element)
+  
+    setCarData((prevData) => ({  // Update the carData state with the new input value
+      ...prevData,  // Update the carData state using the previous state (prevData)
+      // Spread the previous state to keep existing values
+
+      [name]: value,    // Update the value of the specified input field
     }));
   };
 
-//Toggle function to update the car
-  const updateCar = () => {
-    setUpdate(!update)
+  //Toggle function to update the car
+
+  const updateCar = (carId) => {
+    setUpdate(!update);    // Toggle the update state
+    setCarToUpdate(carId);    // Set the carToUpdate state to the ID of the clicked car
   };
-      
-    //=================JSX RENDERING===================
-  
-    return (
+
+  //============JSX RENDERING=============
+
+  return (
     <>
-   {/* App Container */}
+    {/* App Container */}
       <Container id='appContainer'>
         {/* Header */}
        <Header/>
@@ -176,17 +188,15 @@ export default function App() {//Export default App function component
           />            
         </section>
         {/* section2 */}
-          <section id='section2'>
-          
+          <section id='section2'>          
           {/* Display fetched cars */}
           {/* Row 4 */}
-          <Row>
+          <Row id='row4'>
             <Col>
               <h2 className='h2'>Fetched Cars:</h2>
             </Col>
           </Row>
-         
-            
+          {/* Display output */}
             {isLoaded ? (
               <ul id='list'>                
                 {/* Map through the fetched cars and display their details */}
@@ -202,41 +212,52 @@ export default function App() {//Export default App function component
                         <label className='dataLabel'>MAKE:</label><p className='outputText'>{car.make} </p>
                         </Col>
                       <Col className='carData' >
+                        {/* car model */}
                        <label className='dataLabel'>MODEL:</label><p className='outputText'>{car.model}</p>
                       </Col>
                       <Col>
                       
                       </Col>
                     </Row>
-                      {/* car model */}
                       {/* Row 6 */}
                       <Row>
                       <Col className='carData'>
+                        {/* Car registration */}
                         <label className='dataLabel'>REGISTRATION:</label><p className='outputText'>{car.registration}</p>
                       </Col>
                       <Col className='carData'>
+                        {/* Car owner */}
                         <label className='dataLabel'>OWNER:</label><p className='outputText'>{car.owner}</p>
                       </Col>
                       <Col>
-                    {/* Button to remove car from the list */}
-                              <Button variant="primary" id='removeBtn'
-                          onClick={() => removeCar(car._id)}
+                      {/* Button to remove car from the list */}
+                        <Button variant="primary" id='removeBtn'
+                          onClick={() => {
+                            removeCar(car._id);
+                            // setUpdate(false);
+                           }}
                         >
                           REMOVE CAR
                         </Button>
-                            </Col>
+                      </Col>
                       </Row>
                     {/* Row 7 */}
                     <Row>
                       <Col className='updateOpt' >
                         {/* Button to toggle update form */}
-                        <Button variant="primary" onClick={updateCar}> 
-                        {update ? 'EXIT UPDATE' : 'UPDATECAR'}</Button>
+                        <Button 
+                          variant='primary' 
+                          onClick={() => updateCar(car._id)}//Set the click event handler to call updateCar with the car ID
+                          id='toggleUpdate'
+                          >
+                            {/* If in update mode for the current car, show 'EXIT UPDATE', else show 'UPDATE CAR' */}
+                          {update && carToUpdate === car._id ? 'EXIT UPDATE' : 'UPDATE CAR'} 
+                         </Button>
                       </Col>
                     </Row>
                     <div className='update'>
-                      {update && 
-                  <UpdateForm 
+                      {update && carToUpdate === car._id && (
+                      <UpdateForm 
                       newMake={newMake}
                       setNewMake={setNewMake}
                       newModel={newModel}
@@ -247,8 +268,10 @@ export default function App() {//Export default App function component
                       setNewOwner={setNewOwner}
                       updateCarDetails={() => updateCarDetails(car._id)}
                       />
-                      }
+                      ) }
                     </div>
+                     
+                    
                   </li>
                 ))}
               </ul>
