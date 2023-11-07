@@ -30,54 +30,58 @@ const findAllCars = async function (req, res) {//Define an aysnc function to fet
 };
 
 // Controller function to update one single car by Id
-const updateById = async (req, res) => {//Define an async function to update a single car by its id
-  const { make } = req.params;// Extract the 'make' parameter from the request URL
-  try {
-      //Find and update the car
-    const updatedCar = await Car.findOneAndUpdate(
-      { make },// Search criteria: find a car with the specified 'make'
-      { $set: req.body },// Update the car with the data in the request body
-      { new: true }// Return the updated car instead of the original one
-    );
+const updateById = async (req, res) => {//Define an async function to update a single car by its make
+    const { _id } = req.params;// Extract the 'make' parameter from the request URL
 
-      //Conditional rendering to check if the car is found
-    if (!updatedCar) {
-      return res.status(404).send('Car not found');//Respond with a 404 status code and a message indicating the car is not found
+    try {
+        // Find and update the car 
+        const updatedCar = await Car.findByIdAndUpdate(
+            _id,
+            { $set: req.body }, // Update the car with the data in the request body
+            { new: true } // Return the updated car instead of the original one
+        );
+
+        //Conditional rendering to check if the car is found
+        if (!updatedCar) {
+            return res.status(404).json('Car not found');//Respond with a 404 status code and a message indicating the car is not found
+        }
+
+        res.json(updatedCar);// Respond with the updated car
+        console.log(updatedCar)
+
+    } 
+    catch (error) {
+        //Handle errors
+        console.error('Error updating car', error.message);// Handle errors by logging the error,
+        res.status(500).send('Internal server Error');// sending a 500 status code, and an error message
     }
-
-    res.json(updatedCar);//Respond with the updated car
-  } 
-  catch (error) {
-      //Handle errors
-    console.error('Error updating car', error.message);//Log an error message in the console for debugging purposes.
-    res.status(500).send('Internal server Error');//Respond with a 500 (Internal server error) status code and send an error message
-  }
 };
 
 // Controller function to remove a single car by Id
 const removeById = async (req, res) => {//Define an async function to remove a car from the database
-    const { make } = req.params;//Extract the make parameter from the URL
-
+    const  _id  = req.params._id;//Extract the make parameter from the URL
+    // const carId = req.params.carId
+    console.log(_id + "Remove by Id");
     try {
-      //Find and remove a car
-        const removedCar = await Car.findOneAndRemove({ make });
+        //Find and remove a car
+        const removedCar = await Car.findOneAndRemove({ _id });
 
-      //Conditional rendering to check if the car is found
+        //Conditional rendering to check if the car is found
         if (!removedCar) {
-            return res.status(404).send('Car not found');//Respond with a 404 status code and a message indicating the car is not found
+            return res.status(404).json({ error: 'Car not found' });//Respond with a 404 status code and a message indicating the car is not found
         }
 
         res.json({ message: 'Car removed successfully' });//Respond with a JSON object containing a success message
 
     } catch (error) {
-      //Handle errors
+        //Handle errors
         console.error('Error removing car', error.message);        // Handle errors during the removal process
         res.status(500).send('Internal server Error');        // Handle errors during the removal process
 
     }
 };
 
-//Export all the functions
+// Export the functions so that they can be used in other parts of the application
 module.exports = {
   addCar,
   findAllCars,
