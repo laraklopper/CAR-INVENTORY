@@ -8,16 +8,17 @@
 Comparison operators return data based on value comparisons.
 
 
-| Operator  | Description                                                          |
--------------------------------------------------------------------------
-| `{ <field>: { $eq: <value> } }`       | Matches values that are equal to a specified value.                
-| `{ field: { $ne: value } }` | Matches all values that are not equal to a specified value.                                       | 
-| `{ field: { $gt: value } }` | Matches values that are greater than a specified value.                       |
-| `{ field: { $gte: value } }`| Greater Than or Equal To                           | 
-| `{ field: { $lt: value } }` | 	Matches values that are less than a specified value.                                   | 
-| `{ field: { $lte: value } }`| Less Than or Equal To                             | 
-| `{ field: { $in: [val1, val2] } }` | 	Matches any of the values specified in an array.|
-| `{ field: { $nin: [val1, val2] } }` | Matches none of the values specified in an array.                                     | 
+| Name | Description                                   |
+|------|-----------------------------------------------|
+| $eq  | Matches values that are equal to a specified value.                   |
+| $gt  | Matches values that are greater than a specified value.               |
+| $gte | Matches values that are greater than or equal to a specified value.    |
+| $in  | Matches any of the values specified in an array.                       |
+| $lt  | Matches values that are less than a specified value.                  |
+| $lte | Matches values that are less than or equal to a specified value.       |
+| $ne  | Matches all values that are not equal to a specified value.           |
+| $nin | Matches none of the values specified in an array.                      |
+
 
 ### LOGICAL QUERY OPERATORS
 Logical operators return data based on expressions that evaluate to true or false.
