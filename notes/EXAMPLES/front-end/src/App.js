@@ -87,7 +87,7 @@ export default function App() {//Export default App function component
   };
 
   //Function to find cars older than 5 years
-  const findCars = async() => {//
+  const findCars = async() => {//Define an async function to find all cars older than 5 years
     try {
       //Send a request to the server
       const response = await fetch (`http://localhost:3001/findByModel`,{
