@@ -86,7 +86,6 @@ const updateMultiple = async (req, res) => {
     const { _id } = req.params;
 
     try {
-        // Assuming you have the update data in req.body, adjust it accordingly
         const updateData = req.body;
 
         const updatedCars = await Car.updateMany(
@@ -94,10 +93,13 @@ const updateMultiple = async (req, res) => {
             { $set: updateData }
         );
 
+        // Conditional rendering to check if any documents were updated (nModified is the number of modified documents)
         if (updatedCars.nModified === 0) {
+                        // If no documents were modified, return a 404 (Not Found) status with an error message
             return res.status(404).json({ error: 'No cars found for update' });
         }
-
+        
+        // If at least one document was modified, respond with a success message and the update data
         res.status(200).json({ message: 'Cars updated successfully', updatedCars });
     } catch (error) {
         console.error('Error updating cars', error.message);
@@ -105,6 +107,7 @@ const updateMultiple = async (req, res) => {
     }
 }
 
+// Export the functions so that they can be used in other parts of the application
 module.exports = {
     addCar,
     findAllCars,
