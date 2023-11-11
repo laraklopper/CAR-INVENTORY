@@ -21,13 +21,14 @@ export default function App() {//Export default App function component
   const [error, setError] = useState(null);// State to handle errors during data fetching or car addition
   const [isLoaded, setIsLoaded] = useState(false);// State to track whether the data has been loaded
   const [cars, setCars] = useState([]);// State to store the fetched list of cars
-  const [update, setUpdate] = useState(true);//State to manage display of the update form 
+  const [update, setUpdate] = useState(false);//State to manage display of the update form 
   const [newMake, setNewMake] = useState('');//State to store updated car make
   const [newModel, setNewModel] = useState('');//state to store updated car model
   const [newRegistration, setNewRegistration] = useState('');// State to store updated car registration
   const [newOwner, setNewOwner] = useState('');// State to store updated car owner
   const [carToUpdate, setCarToUpdate] = useState(null);// Track the ID of the car for the update form
   const [foundCars, setFoundCars] = useState([]);//State to store cars older than 5 years
+
 
 
   //===================FETCH JSON DATA=====================
@@ -83,11 +84,12 @@ export default function App() {//Export default App function component
     catch (error) {
       // Handle errors 
       console.error('Error adding car:', error.message);//Display error message in the console for debugging purposes
+      setError('Error adding car:', error.message);//Log errors during the request process
     }
   };
 
   //Function to find cars older than 5 years
-  const findCars = async() => {//
+  const findCars = async() => {//Define an async function to find all cars older than 5 years
     try {
       //Send a request to the server
       const response = await fetch (`http://localhost:3001/findByModel`,{
@@ -110,12 +112,13 @@ export default function App() {//Export default App function component
     catch (error) {
       // Handle errors 
       console.error('Error finding cars older than 5 years:', error.message);//Display error in console for debugging purposes
-      setError("Error finding cars older than 5 years", error.message);//Log errors during the update process
+      setError("Error finding cars older than 5 years", error.message);//Log errors during the request process
+
     }
   }
 
   //---------------------PUT REQUESTS-------------------
-  // Function to update car details
+  // Function to update car details for a single car
   const updateCarDetails = async () => {//Define an async function to update car details
     try {
       //Send a request to the server
@@ -130,7 +133,9 @@ export default function App() {//Export default App function component
           ...(newModel && { model: newModel }),
           ...(newRegistration && { registration: newRegistration }),
           ...(newOwner && { owner: newOwner }),
-        })
+
+        }
+        )
       })
 
       //Conditional rendering to check if the response is successful
@@ -161,14 +166,50 @@ export default function App() {//Export default App function component
             setNewRegistration(''); // Clear the newRegistration input field
             setNewOwner(''); // Clear the newOwner input field
 
-      console.log('Car details successfully updated');// Log a success message if the update request is successful for debugging purposes
+      console.log('Car details successfully updated');// Log a success message if the update request is successful
     }
     catch (error) {
       //Error handling
-      console.error('Error updating car', error.message);//Display error message in the console
+      console.error('Error updating car', error.message);//Display error message in the console for debugging purposes
       setError('Error updating car details', error.message);//Log errors during the update process
     }
   };
+
+  // //Function to update the details of multiple cars
+  // const updateMultipleCars = async () => {//Define an async function to update multiple car details
+  //   try {
+  //     const selectedCarIds = cars.map((car) => car._id); 
+  //     const updatedData = {
+  //       make: newMake,
+  //       model: newModel,
+  //       registration: newRegistration,
+  //       owner: newOwner,
+  //     };
+
+  //     // Send a PUT request to update multiple cars
+  //     const response = await fetch('http://localhost:3001/updateMultipleCars', {
+  //       method: 'PUT',//Request method
+  //       headers: {
+  //         'Content-type': 'application/json',//Type of content being passed
+  //       },
+  //       body: JSON.stringify({ // Convert the data to be updated into a JSON string
+  //         carIds: 
+  //         selectedCarIds, 
+  //         updatedData }),
+  //     });
+
+  //     //Conditional rendering to check if the response is successful
+  //     if (!response.ok) {
+  //       throw new Error('Failed to update car details')//Throw an error message if the request is unsuccessful
+  //     }
+
+  //     console.log('Cars updated successfully');//If the request is successful log a success message 
+  //   } catch (error) {
+  //     //Handle errors
+  //     console.error('Error updating cars:', error.message);//Log an error message in the console for debugging purposes.
+  //     setError('Error updating cars:', error.message);//Log errors during the update process
+  //   }
+  // };
 
 //-----------------DELETE REQUEST--------------------------
   //Function to remove a car
@@ -219,6 +260,7 @@ export default function App() {//Export default App function component
     setCarToUpdate(carId);    // Set the carToUpdate state to the ID of the clicked car
   };
 
+
   //============JSX RENDERING=============
 
   return (
@@ -244,6 +286,12 @@ export default function App() {//Export default App function component
               <h2 className='h2'>Fetched Cars:</h2>
             </Col>
           </Row>
+          {/* <Row>
+            <Col>
+              <Button variant='primary'
+                onClick={updateMultipleCars}> UPDATE MULTIPLE CARS:</Button>
+            </Col>
+          </Row> */}
           {/* Display output */}
             {isLoaded ? (
               <ul id='list'>                
@@ -264,7 +312,7 @@ export default function App() {//Export default App function component
                        <label className='dataLabel'>MODEL:</label><p className='outputText'>{car.model}</p>
                       </Col>
                       <Col>
-                      
+                    
                       </Col>
                     </Row>
                       {/* Row 7 */}
@@ -301,6 +349,7 @@ export default function App() {//Export default App function component
                           {update && carToUpdate === car._id ? 'EXIT UPDATE' : 'UPDATE CAR'} 
                          </Button>
                       </Col>
+                     
                     </Row>
                     <div className='update'>
                       {/* Display the update car form */}
@@ -317,7 +366,7 @@ export default function App() {//Export default App function component
                       updateCarDetails={() => updateCarDetails(car._id)}
                       />
                       ) }
-                    </div>                    
+                    </div>                                 
                   </li>
                 ))}
               </ul>
@@ -326,7 +375,7 @@ export default function App() {//Export default App function component
             )}
             {/* Display error if there's an issue with data fetching */}
             {error && <p>{error}</p>}
-           
+         
         </section>
         {/* Section 3 */}
         <section id='section3'>
