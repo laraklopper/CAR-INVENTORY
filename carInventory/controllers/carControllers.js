@@ -1,5 +1,22 @@
 const Car = require('../models/carSchema');// Import the Car model representing the structure of the document in the MongoDB collection
 
+//-----------------GET REQUEST----------------------
+// Controller function to retrieve all cars
+const findAllCars = async function (req, res) {//Define an aysnc function to fetch all cars from the database
+    try {
+        // Fetch all cars from the database based on any optional query parameters in req.body
+        const cars = await Car.find(req.body);
+        res.json(cars);// Respond with the list of cars
+    }
+
+    catch (error) {
+        // Handle errors 
+        console.error('Error fetching cars', error.message);//Log an error message in the console for debugging purposes.
+        res.status(500).send('Internal server Error');//Send a 500 status code, and an error message
+    }
+};
+
+//-----------------POST REQUEST----------------------------------
 // Controller function to create a new car
 const addCar = async function (req, res) {//Define an async function to add a new car 
     try {
@@ -7,7 +24,6 @@ const addCar = async function (req, res) {//Define an async function to add a ne
         await newCar.save(); // Save the new car to the database
 
         res.status(201).json(newCar);// Respond with the newly created car and a 201 status code (Created)
-
     } 
     catch (error) {
         // Handle errors 
@@ -16,23 +32,33 @@ const addCar = async function (req, res) {//Define an async function to add a ne
     }
 };
 
-// Controller function to retrieve all cars
-const findAllCars = async function (req, res) {//Define an aysnc function to fetch all cars from the database
-    try {
-        // Fetch all cars from the database based on any optional query parameters in req.body
-        const cars = await Car.find(req.body);
-        res.json(cars);// Respond with the list of cars
-    } 
-    
-    catch (error) {
-        // Handle errors 
-        console.error('Error fetching cars', error.message);//Log an error message in the console for debugging purposes.
-        res.status(500).send('Internal server Error');//Sending a 500 status code, and an error message
-    }
-};
 
+
+//Controller function to find cars older than 5 years
+const findByModel = async (req, res) => {//Define an async function to find cars older than 5 years from the database
+    try {
+        // Use the Car model to find cars where the 'model' field is less than or equal to 2018
+        const cars = await Car.find({ model: { $lte: 2018 } })
+
+        //Conditional rendering to check if there are no cars found
+        if (!cars || cars.length === 0) {
+            // Respond with a 404 status code and a JSON object indicating no cars were found
+            return res.status(404).json({ error: "No cars found" });
+        }
+
+        res.json(cars); // Respond with a JSON array of cars that are older than 5 years
+    }
+    catch (error) {
+        //Handle errors
+        console.error('error finding cars', error.message); //Log error message in the console for debugging puposes
+        res.status(500).send('Internal server Error');// Respond with a 500 (Internal server error) status code and an error message
+    }
+
+}
+
+//-----------------PUT REQUESTS------------------------
 // Controller function to update one single car by Id
-const updateById = async (req, res) => {//Define an async function to update a single car by its make
+const updateById = async (req, res) => {//Define an async function to update a single car by its id
     const { _id } = req.params;// Extract the 'make' parameter from the request URL
 
     try {
@@ -51,7 +77,7 @@ const updateById = async (req, res) => {//Define an async function to update a s
         res.json(updatedCar);// Respond with the updated car
         console.log(updatedCar);//Log the updated car to the console
 
-    } 
+    }
     catch (error) {
         //Handle errors
         console.error('Error updating car', error.message);// Handle errors by logging the error,
@@ -60,9 +86,29 @@ const updateById = async (req, res) => {//Define an async function to update a s
 };
 
 
+// Controller function to update multiple cars
+// const updateMultipleCars = async (req, res) => {//Define an async function to update multiple cars
+//     try {
+//         const upatedCars = await Car.findByIdAndUpdate(
+//             _id,
+//             { $set: req.body }, // Update the car with the data in the request body
+//             { new: true } // Return the updated car instead of the original one
+//         );
+//         if (!updatedCars) {
+//             return res.status(404).json({ error: 'Car not found' });
+//         }
+//     }
+//     catch (error) {
+//         //Handle error
+//         console.error('Error updating cars', error.message);//Log error message in the console for debugging puposes
+//         res.status(500).send({ error: 'Internal server error' });// Respond with a 500 (Internal server error) status code and an error message
+//     }
+// }
+//--------------DELETE REQUESTS---------------------
+
 //Controller function to remove one car
 const removeById = async (req, res) => {//Define an async function to remove a car from the database
-    const  _id  = req.params._id;//Extract the make parameter from the URL
+    const  _id  = req.params._id;//Extract the Id parameter from the URL
 
     console.log(_id + "Remove by Id");
     try {
@@ -76,36 +122,18 @@ const removeById = async (req, res) => {//Define an async function to remove a c
         }
 
         res.json({ message: 'Car removed successfully' });//Respond with a JSON object containing a success message
-
-    } catch (error) {
+    } 
+    catch (error) {
         //Handle errors
-        console.error('Error removing car', error.message); // Handle errors during the removal process
+        console.error('Error removing car', error.message); //Log error message in the console for debugging puposes
         res.status(500).send('Internal server Error');   // Handle errors during the removal process
 
     }
 };
 
-//Controller function to find cars older than 5 years
-const findByModel = async (req, res) => {//Define an async function to find cars older than 5 years from the database
-    try {
-        // Use the Car model to find cars where the 'model' field is less than or equal to 2018
-        const cars = await Car.find({model: {$lte: 2018}})
-       
-        //Conditional rendering to check if there are no cars found
-        if (!cars || cars.length === 0) {
-            // Respond with a 404 status code and a JSON object indicating no cars were found
-            return res.status(404).json({error: "No cars found"});
-        }
 
-        res.json(cars); // Respond with a JSON array of cars that are older than 5 years
 
-    } catch (error) {
-        //Handle errors
-        console.error('error finding cars', error.message); //Log error message in the console for debugging puposes
-        res.status(500).send('Internal server Error');// Respond with a 500 (Internal server error) status code and an error message
-    }
-}
-
+//-----------------EXPORT FUNCTIONS----------------
 // Export the functions so that they can be used in other parts of the application
 module.exports = {
     addCar,
@@ -113,4 +141,5 @@ module.exports = {
    updateById,
    removeById,
    findByModel
+   // updateMultipleCars
 };
