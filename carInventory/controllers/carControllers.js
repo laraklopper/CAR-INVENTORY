@@ -99,17 +99,11 @@ const findByModel = async (req, res) => {//Define an async function to find cars
 
         res.json(cars); // Respond with a JSON array of cars that are older than 5 years
 
-
-
     } catch (error) {
         //Handle errors
         console.error('error finding cars', error.message); //Log error message in the console for debugging puposes
         res.status(500).send('Internal server Error');// Respond with a 500 (Internal server error) status code and an error message
     }
-
-    
-
-
 }
 
 // Export the functions so that they can be used in other parts of the application
