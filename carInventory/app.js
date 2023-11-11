@@ -69,6 +69,7 @@ app.get('/findAllCars', carController.findAllCars);//Route to find all cars
 app.put('/updateById/:_id', carController.updateById);//Route to update a car by ID
 app.delete('/removeById/:_id', carController.removeById);//Route to remove car by ID
 app.post('/findByModel', carController.findByModel);//Route to find cars by model based on a certain criteria
+// app.put('/updateMultipleCars', carController.updateMultipleCars )//Route to update multiple cars
 
 //================START THE SERVER=========================
 // Start the Express server and listen on the specified port
