@@ -106,13 +106,11 @@ export default function App() {//Export default App function component
       const data = await response.json();
       setFoundCars(data); // Update state with the fetched data
 
-    } catch (error) {
+    } 
+    catch (error) {
       // Handle errors 
       console.error('Error finding cars older than 5 years:', error.message);//Display error in console for debugging purposes
       setError("Error finding cars older than 5 years", error.message);//Log errors during the update process
-
-
-
     }
   }
 
@@ -132,9 +130,7 @@ export default function App() {//Export default App function component
           ...(newModel && { model: newModel }),
           ...(newRegistration && { registration: newRegistration }),
           ...(newOwner && { owner: newOwner }),
-
-        }
-        )
+        })
       })
 
       //Conditional rendering to check if the response is successful
@@ -165,7 +161,7 @@ export default function App() {//Export default App function component
             setNewRegistration(''); // Clear the newRegistration input field
             setNewOwner(''); // Clear the newOwner input field
 
-      console.log('Car details successfully updated');// Log a success message if the update request is successful
+      console.log('Car details successfully updated');// Log a success message if the update request is successful for debugging purposes
     }
     catch (error) {
       //Error handling
