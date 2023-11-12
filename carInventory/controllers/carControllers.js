@@ -80,30 +80,38 @@ const updateById = async (req, res) => {//Define an async function to update a s
     }
     catch (error) {
         //Handle errors
-        console.error('Error updating car', error.message);// Handle errors by logging the error,
+        console.error('Error updating car', error.message);//Log error message in the console for debugging puposes
         res.status(500).send('Internal server Error');// sending a 500 status code, and an error message
     }
 };
 
 
 // Controller function to update multiple cars
-// const updateMultipleCars = async (req, res) => {//Define an async function to update multiple cars
+// const updateMultipleCars = async (req, res) => {
 //     try {
-//         const upatedCars = await Car.findByIdAndUpdate(
-//             _id,
-//             { $set: req.body }, // Update the car with the data in the request body
-//             { new: true } // Return the updated car instead of the original one
+//         // Use the Car model to update multiple documents
+//         const updatedCars = await Car.updateMany(
+//             // Specify the filter criteria for the documents to update
+{ /* Filter criteria here */ }
+//             { $set: req.body }, // Use $set to update the specified fields with the values from req.body
+//             { new: true } // Option to return the modified document instead of the original document
 //         );
+
 //         if (!updatedCars) {
-//             return res.status(404).json({ error: 'Car not found' });
+//             // If no cars were found for update, respond with a 404 status code and an error message
+//             return res.status(404).json({ error: 'No cars found for update' });
 //         }
-//     }
-//     catch (error) {
-//         //Handle error
+
+//         res.json(updatedCars);// Respond with a JSON object containing the updated cars
+
+//     } 
+//    catch (error) {
+//         // Handle errors
 //         console.error('Error updating cars', error.message);//Log error message in the console for debugging puposes
-//         res.status(500).send({ error: 'Internal server error' });// Respond with a 500 (Internal server error) status code and an error message
+//         res.status(500).send({ error: 'Internal server error' });// Respond with a 500 (Internal Server Error) status code and an error message
 //     }
-// }
+// };
+
 //--------------DELETE REQUESTS---------------------
 
 //Controller function to remove one car
