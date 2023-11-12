@@ -68,6 +68,7 @@ const addCar = async function (req, res) {//Define an async function to add a ne
 };
 ``````
 ### READ (GET)
+
 To read or query documents, use the `find() method`
 ``````
 // Controller function to retrieve all cars
@@ -87,7 +88,7 @@ const findAllCars = async function (req, res) {//Define an aysnc function to fet
 
 ```````
 ### UPDATE (PUT)
-**UPDATE**
+
 To update a document use the:
 - `update() method`
 - `updateOne() method`
@@ -127,6 +128,7 @@ const updateById = async (req, res) => {//Define an async function to update a s
 ``````
 
 ### DELETE (DELETE)
+
 To delete a document, use the `remove() function`.
 ````
 //Controller function to remove one car
