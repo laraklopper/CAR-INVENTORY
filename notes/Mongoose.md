@@ -41,49 +41,52 @@ module.exports = mongoose.model('carInventory', carsSchema);//Make the model ava
 ```
 ### 3. CREATE A CONTROLLER FILE TO PERFORM CRUD OPERATIONS
 
+![image](https://github.com/laraklopper/LT8-Data-Interaction/assets/135839853/ff72194a-7b50-4c75-9881-b354f1b633fb)
+
 In the project directory, create another directory called “controllers”. 
 In this directory, create a file called controller.js. In this file, create all the code needed to perform CRUD operations using Mongoose.
 ```````
 const Car = require('./carInventory/models/carSchema.js');
 `````````
 
- - **Create:**
+### CREATE (POST)
 To create a document with Mongoose, use the `save() function`
 ``````
-exports.addCar = async function addCar(req, res) {
+// Controller function to create a new car
+const addCar = async function (req, res) {//Define an async function to add a new car 
     try {
-        const { make, model, registration, owner } = req.body;
+        const newCar = new Car(req.body);// Create a new Car instance with the request body and save it to the database
+        await newCar.save(); // Save the new car to the database
 
-        if (!make || !model || !registration || !owner) {
-            return res.status(400).json({ error: 'All fields are required' });
-        }
-
-        const newCar = new Car({ make, model, registration, owner });
-
-        await newCar.save();
-
-        res.status(201).json(newCar);
-    } catch (error) {
-        console.error('Error adding car:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(201).json(newCar);// Respond with the newly created car and a 201 status code (Created)
+    } 
+    catch (error) {
+        // Handle errors 
+        console.error('Error adding the new car', error.message);//Log an error message in the console for debugging purposes.
+        res.status(500).send('Internal server error');//Send a 500 status code and an error message
     }
 };
 ``````
-**READ**
+### READ (GET)
 To read or query documents, use the `find() method`
 ``````
-exports.findAllCars = async function findAllCars(req, res) {
+// Controller function to retrieve all cars
+const findAllCars = async function (req, res) {//Define an aysnc function to fetch all cars from the database
     try {
-        const cars = await Car.find();
+        // Fetch all cars from the database based on any optional query parameters in req.body
+        const cars = await Car.find(req.body);
+        res.json(cars);// Respond with the list of cars
+    }
 
-        res.status(200).json(cars);
-    } catch (error) {
-        console.error('Error retrieving cars:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+    catch (error) {
+        // Handle errors 
+        console.error('Error fetching cars', error.message);//Log an error message in the console for debugging purposes.
+        res.status(500).send('Internal server Error');//Send a 500 status code, and an error message
     }
 };
-```````
 
+```````
+### UPDATE (PUT)
 **UPDATE**
 To update a document use the:
 - `update() method`
@@ -92,37 +95,79 @@ To update a document use the:
 - `findOneAndUpdate() method`
   
 `````
-exports.updateByMake = async function updateByMake(req, res) {
+// Controller function to update one single car by Id
+const updateById = async (req, res) => {//Define an async function to update a single car by its id
+    const { _id } = req.params;// Extract the 'make' parameter from the request URL
+
     try {
-        const makeToUpdate = req.params.make;
-
-        const { model, registration, owner } = req.body;
-
-        if (!model && !registration && !owner) {
-            return res.status(400).json({ error: 'At least one field is required for update' });
-        }
-``````
-**DELETE**
-To delete a document, use the `remove() function`.
-````
-       const updatedCar = await Car.findOneAndUpdate(
-            { make: makeToUpdate },
-            { $set: { model, registration, owner } },
-            { new: true }
+        // Find and update the car 
+        const updatedCar = await Car.findByIdAndUpdate(
+            _id,
+            { $set: req.body }, // Update the car with the data in the request body
+            { new: true } // Return the updated car instead of the original one
         );
 
+        //Conditional rendering to check if the car is found
         if (!updatedCar) {
-            return res.status(404).json({ error: 'Car not found' });
+            return res.status(404).json('Car not found');//Respond with a 404 status code and a message indicating the car is not found
         }
 
-        res.status(200).json(updatedCar);
-    } catch (error) {
-        console.error('Error updating car:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.json(updatedCar);// Respond with the updated car
+        console.log(updatedCar);//Log the updated car to the console
+
+    }
+    catch (error) {
+        //Handle errors
+        console.error('Error updating car', error.message);// Handle errors by logging the error,
+        res.status(500).send('Internal server Error');// sending a 500 status code, and an error message
+    }
+};
+
+
+``````
+
+### DELETE (DELETE)
+To delete a document, use the `remove() function`.
+````
+//Controller function to remove one car
+const removeById = async (req, res) => {//Define an async function to remove a car from the database
+    const  _id  = req.params._id;//Extract the Id parameter from the URL
+
+    console.log(_id + "Remove by Id");
+    try {
+        //Find and remove a car
+        const removedCar = await Car.findOneAndRemove({ _id });
+
+        //Conditional rendering to check if the car is found
+        if (!removedCar) {
+            return res.status(404).json({ error: 'Car not found' })
+        //Respond with a 404 status code and a message indicating the car is not found
+        }
+
+        res.json({ message: 'Car removed successfully' });//Respond with a JSON object containing a success message
+    } 
+    catch (error) {
+        //Handle errors
+        console.error('Error removing car', error.message); //Log error message in the console for debugging puposes
+        res.status(500).send('Internal server Error');   // Handle errors during the removal process
+
     }
 };
 ````
-   
+### EXPORT FUNCTIONS
+
+```
+// Export the functions so that they can be used in other parts of the application
+module.exports = {
+    addCar,
+    findAllCars,
+   updateById,
+   removeById,
+   findByModel,
+   updateMultipleCars
+};
+
+```   
 ### 4. CONNECT TO THE DATABASE & EXECUTE THE APPROPRIATE CRUD OPERATIONS
 
 Use the `mongoose.connect()` method to connect the database. The arguement passed into the connect() method is the connection string for the database.
