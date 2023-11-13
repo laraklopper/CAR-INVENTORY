@@ -1,6 +1,6 @@
 # TOGGLE SWITCH
 In React, a toggle functionality is commonly implemented to switch between two states, such as showing and hiding content or changing the appearance of an element. 
-How to toggle multiple items at the same time?
+
 
 ## TABLE OF CONTENTS
 1. [EXAMPLES](#examples)
@@ -52,7 +52,25 @@ export const Toggle = ({ label, toggled, onClick }) => {
     )
 }
 ```
+```
+import React, { useState } from "react";
+
+export default function App() {
+  let [changeText, setChangeText] = useState(true);
+  const handleChange = () => {
+    return setChangeText(!changeText);
+  };
+
+  return (
+    <div>
+      <button onClick={() => handleChange()}>click me</button>
+      {changeText ? "Apple" : "Banana"}
+    </div>
+  );
+}
+```
 ## REFERENCES
 
 - https://www.digitalocean.com/community/tutorials/how-to-build-a-custom-toggle-switch-with-react
-- https://javascript.plainenglish.io/how-to-do-conditional-rendering-in-react-and-create-a-toggle-button-4a0e3b5565ed 
+- https://javascript.plainenglish.io/how-to-do-conditional-rendering-in-react-and-create-a-toggle-button-4a0e3b5565ed
+- https://webtips.dev/toggle-buttons-in-react 
