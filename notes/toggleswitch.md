@@ -1,34 +1,36 @@
 # TOGGLE SWITCH
-
+In React, a toggle functionality is commonly implemented to switch between two states, such as showing and hiding content or changing the appearance of an element. 
 How to toggle multiple items at the same time?
 
 ## TABLE OF CONTENTS
-1. [REACT HOOKS]
-2. [EXAMPLES]
-3. [REFERENCES]
+1. [EXAMPLES](#examples)
+2. [REFERENCES](#references)
 
+## EXAMPLES
 
 ```
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import isString from 'lodash/isString';
-import React, { Component } from 'react';
-import isBoolean from 'lodash/isBoolean';
-import isFunction from 'lodash/isFunction';
-import './index.scss';
+import React, { useState } from 'react';
 
-class ToggleSwitch extends Component {}
+// Functional component named Toggle
+export default function Toggle() {
+  // State variable isToggleOn with initial value true, and setToggleOn is the function to update it
+  const [isToggleOn, setToggleOn] = useState(true);
 
-ToggleSwitch.propTypes = {
-  theme: PropTypes.string,
-  enabled: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.func
-  ]),
-  onStateChanged: PropTypes.func
+  // Event handler function for the button click
+  const handleClick = () => {
+    // Updating the state based on the previous state using the functional update form
+    setToggleOn(prevState => !prevState);
+  };
+
+//===================JSX RENDERING=============================
+  // Rendering the button with an onClick event that triggers the handleClick function
+  return (
+    <button onClick={handleClick}>
+      {/* Displaying 'ON' if isToggleOn is true, 'OFF' otherwise */}
+      {isToggleOn ? 'ON' : 'OFF'}
+    </button>
+  );
 }
-
-export default ToggleSwitch;
 ```
 
 ## REFERENCES
