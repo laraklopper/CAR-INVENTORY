@@ -86,25 +86,60 @@ const updateById = async (req, res) => {//Define an async function to update a s
 };
 
 
+
 // Controller function to update multiple cars
+// const updateMultipleCars = async (req, res) => {//Define an async function to update multiple cars
+//     try {
+//         const upatedCars = await Car.findByIdAndUpdate(
+//             _id,
+//             { $set: req.body }, // Update the car with the data in the request body
+//             { new: true } // Return the updated car instead of the original one
+//         );
+//         if (!updatedCars) {
+//             return res.status(404).json({ error: 'Car not found' });
+//         }
+//     }
+//     catch (error) {
+//         //Handle error
+//         console.error('Error updating cars', error.message);//Log error message in the console for debugging puposes
+//         res.status(500).send({ error: 'Internal server error' });// Respond with a 500 (Internal server error) status code and an error message
+//     }
+// }
+
 const updateMultipleCars = async (req, res) => {//Define an async function to update multiple cars
     try {
-        const upatedCars = await Car.findByIdAndUpdate(
-            _id,
-            { $set: req.body }, // Update the car with the data in the request body
-            { new: true } // Return the updated car instead of the original one
+                // Extract old and new owner values from the request body
+        const oldOwner = req.body.owner
+        const newOwner = req.body.newOwner
+        console.log(oldOwner);//Log extracted values for debugging purposes
+        console.log(newOwner);//Log extracted values for debugging purposes
+        
+        const updatedCars = await Car.updateMany(    
+            // Specify the filter criteria for the documents to update
+            { owner: oldOwner }, // Use $set to update the specified fields with the values from req.body
+            { $set: {owner : newOwner}} // Option to return the modified document instead of the original document
         );
-        if (!updatedCars) {
-            return res.status(404).json({ error: 'Car not found' });
-        }
-    }
-    catch (error) {
-        //Handle error
-        console.error('Error updating cars', error.message);//Log error message in the console for debugging puposes
-        res.status(500).send({ error: 'Internal server error' });// Respond with a 500 (Internal server error) status code and an error message
-    }
-}
 
+       //conditional rendering to update to check if the car was found
+        if (!updatedCars) {
+            // If no cars were found for update, respond with a 404 status code and an error message
+            return res.status(404).json({ error: 'No cars found for update' });
+        }
+        
+        // Respond with a JSON object containing the updated cars
+          res.json({
+            success: true,// Indicate that the update operation was successful
+            message: `${updatedCars.nModified} cars updated successfully`,// Provide a success message with the number of cars modified
+            updatedCars,//// Include the details of the updated cars in the response
+        });
+
+    }
+   catch (error) {
+        // Handle errors
+        console.error('Error updating cars', error.message);//Log error message in the console for debugging puposes
+        res.status(500).send({ error: 'Internal server error' });// Respond with a 500 (Internal Server Error) status code and an error message
+    }
+};
 //--------------DELETE REQUESTS---------------------
 
 //Controller function to remove one car
