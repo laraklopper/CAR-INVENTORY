@@ -175,41 +175,41 @@ export default function App() {//Export default App function component
     }
   };
 
-  // //Function to update the details of multiple cars
-  // const updateMultipleCars = async () => {//Define an async function to update multiple car details
-  //   try {
-  //     const selectedCarIds = cars.map((car) => car._id); 
-  //     const updatedData = {
-  //       make: newMake,
-  //       model: newModel,
-  //       registration: newRegistration,
-  //       owner: newOwner,
-  //     };
+  //Function to update the details of multiple cars
+  const updateMultipleCars = async () => {//Define an async function to update multiple car details
+    try {
+      const selectedCarIds = cars.map((car) => car._id); 
+      const updatedData = {
+        make: newMake,
+        model: newModel,
+        registration: newRegistration,
+        owner: newOwner,
+      };
 
-  //     // Send a PUT request to update multiple cars
-  //     const response = await fetch('http://localhost:3001/updateMultipleCars', {
-  //       method: 'PUT',//Request method
-  //       headers: {
-  //         'Content-type': 'application/json',//Type of content being passed
-  //       },
-  //       body: JSON.stringify({ // Convert the data to be updated into a JSON string
-  //         carIds: 
-  //         selectedCarIds, 
-  //         updatedData }),
-  //     });
+      // Send a PUT request to update multiple cars
+      const response = await fetch('http://localhost:3001/updateMultipleCars', {
+        method: 'PUT',//Request method
+        headers: {
+          'Content-type': 'application/json',//Type of content being passed
+        },
+        body: JSON.stringify({ // Convert the data to be updated into a JSON string
+          carIds: 
+          selectedCarIds, 
+          updatedData }),
+      });
 
-  //     //Conditional rendering to check if the response is successful
-  //     if (!response.ok) {
-  //       throw new Error('Failed to update car details')//Throw an error message if the request is unsuccessful
-  //     }
+      //Conditional rendering to check if the response is successful
+      if (!response.ok) {
+        throw new Error('Failed to update car details')//Throw an error message if the request is unsuccessful
+      }
 
-  //     console.log('Cars updated successfully');//If the request is successful log a success message 
-  //   } catch (error) {
-  //     //Handle errors
-  //     console.error('Error updating cars:', error.message);//Log an error message in the console for debugging purposes.
-  //     setError('Error updating cars:', error.message);//Log errors during the update process
-  //   }
-  // };
+      console.log('Cars updated successfully');//If the request is successful log a success message 
+    } catch (error) {
+      //Handle errors
+      console.error('Error updating cars:', error.message);//Log an error message in the console for debugging purposes.
+      setError('Error updating cars:', error.message);//Log errors during the update process
+    }
+  };
 
 //-----------------DELETE REQUEST--------------------------
   //Function to remove a car
