@@ -89,7 +89,7 @@ const UpdateCarsComponent = () => {
     }));
   };
 
-  // Function to trigger the updateMultipleCars function on the server
+  /// Function to trigger the updateMultipleCars function on the server
   const handleUpdateCars = async () => {
     try {
       const response = await fetch('http://localhost:3001/updateMultipleCars', {
