@@ -178,24 +178,16 @@ export default function App() {//Export default App function component
   //Function to update the details of multiple cars
   const updateMultipleCars = async () => {//Define an async function to update multiple car details
     try {
-      const selectedCarIds = cars.map((car) => car._id); 
-      const updatedData = {
-        make: newMake,
-        model: newModel,
-        registration: newRegistration,
-        owner: newOwner,
-      };
-
       // Send a PUT request to update multiple cars
       const response = await fetch('http://localhost:3001/updateMultipleCars', {
         method: 'PUT',//Request method
         headers: {
           'Content-type': 'application/json',//Type of content being passed
         },
-        body: JSON.stringify({ // Convert the data to be updated into a JSON string
-          carIds: 
-          selectedCarIds, 
-          updatedData }),
+          body: JSON.stringify({ // Convert the data to be updated into a JSON string
+          owner: 'oldOwner',
+          newOwner: newOwner,
+        }),
       });
 
       //Conditional rendering to check if the response is successful
@@ -286,12 +278,27 @@ export default function App() {//Export default App function component
               <h2 className='h2'>Fetched Cars:</h2>
             </Col>
           </Row>
-          {/* <Row>
+           <form onSubmit={updateMultipleCars}>
+        <Row>
+          <Col>
+          <label><p className='labelText'>UPDATE OWNER</p>
+          <input
+          type='text'
+          className='formInput'
+          onChange={handleInputChange}
+          value={newOwner}
+          name='oldOwner'/>
+          </label>
+          </Col>
+        </Row>
+         
+          <Row>
             <Col>
-              <Button variant='primary'
-                onClick={updateMultipleCars}> UPDATE MULTIPLE CARS:</Button>
-            </Col>
-          </Row> */}
+            <Button variant='primary' type='submit'>
+                  UPDATE MULTIPLE CARS
+            </Button></Col>
+          </Row>
+          </form>
           {/* Display output */}
             {isLoaded ? (
               <ul id='list'>                
