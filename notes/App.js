@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import Header from './components/Header';
-import Form from './components/Form';
-import UpdateForm from './components/UpdateForm';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+import React, { useEffect, useState } from 'react';// Import the React module to use React functionalities
+import './App.css';//Import CSS File
+import Header from './components/Header';//Import Header function component
+import Form from './components/Form';//Import Form function component
+import UpdateForm from './components/UpdateForm';//Import UpdateForm function component
+import Container from 'react-bootstrap/Container';//Import Bootstrap Container
+import Row from 'react-bootstrap/Row';//Import Bootstrap Row 
+import Col from 'react-bootstrap/Col';//Import Bootstrap Colomn
+import Button from 'react-bootstrap/Button';//Import Bootstrap button component
 
 export default function App() {
   const [carData, setCarData] = useState({
@@ -66,8 +66,7 @@ export default function App() {
       console.log('Car added successfully');
     } catch (error) {
       console.error('Error adding car:', error.message);
-      setError('Error adding car:', error.message);
-      return; // Stop further execution on error
+      setError('Error adding car: ' + error.message);
     }
   };
 
@@ -89,7 +88,7 @@ export default function App() {
       setFoundCars(data);
     } catch (error) {
       console.error('Error finding cars older than 5 years:', error.message);
-      setError('Error finding cars older than 5 years', error.message);
+      setError('Error finding cars older than 5 years: ' + error.message);
     }
   };
 
@@ -134,8 +133,8 @@ export default function App() {
 
       console.log('Car details successfully updated');
     } catch (error) {
-      console.error('Error updating car', error.message);
-      setError('Error updating car details', error.message);
+      console.error('Error updating car details:', error.message);
+      setError('Error updating car details: ' + error.message);
     }
   };
 
@@ -163,7 +162,7 @@ export default function App() {
       console.log('Cars updated successfully');
     } catch (error) {
       console.error('Error updating cars:', error.message);
-      setError('Error updating cars:', error.message);
+      setError('Error updating cars: ' + error.message);
     }
   };
 
@@ -183,16 +182,17 @@ export default function App() {
       setCars((prevCars) =>
         prevCars.filter((car) => car._id !== carId)
       );
+
       console.log('Car removed successfully');
     } catch (error) {
-      setError('Error removing car', error);
+      setError('Error removing car: ' + error.message);
       console.error('Error removing car:', error.message);
     }
   };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-
+  
     setCarData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -222,25 +222,32 @@ export default function App() {
             </Col>
           </Row>
           <div>
-            <Row>
-              <Col>
-                <Button onClick={updateMultipleCars}>UPDATE CARS</Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                {updateStatus && (
-                  <div>
-                    {updateStatus.error ? (
-                      <p>Error: {updateStatus.error}</p>
-                    ) : (
-                      <p>Cars updated successfully</p>
-                    )}
-                  </div>
-                )}
-              </Col>
-            </Row>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateMultipleCars();
+              }}
+            >
+              <Row>
+                <Col>
+                  <label>
+                    <p>NEW OWNER:</p>
+                    <input
+                      type='text'
+                      name='newOwner'
+                      value={newOwner}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+
+                  <Button type='submit' variant='primary'>
+                    UPDATE MULTIPLE CARS
+                  </Button>
+                </Col>
+              </Row>
+            </form>
           </div>
+
           {isLoaded ? (
             <ul id='list'>
               {cars.map((car) => (
@@ -267,7 +274,7 @@ export default function App() {
                     </Col>
                     <Col>
                       <Button
-                        variant="primary"
+                        variant='primary'
                         id='removeBtn'
                         onClick={() => {
                           removeCar(car._id);
@@ -311,8 +318,10 @@ export default function App() {
           ) : (
             <p>Loading...</p>
           )}
+
           {error && <p>{error}</p>}
         </section>
+
         <section id='section3'>
           <Row>
             <Col>
