@@ -13,7 +13,6 @@ const updateMultipleCars = async (req, res) => {//Define an async function to up
         const updatedCar = await Car.updateMany(
             { owner: oldOwner }, // Use the variable oldOwner here
             { $set: { owner: newOwner } },
-            { new: true } // This option is not necessary for updateMany
         );
 
         //Conditional rendering to check if the car is found
