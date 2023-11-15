@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';// Import the React module to use React functionalities
-import './App.css';//Import CSS File
-import Header from './components/Header';//Import Header function component
-import Form from './components/Form';//Import Form function component
-import UpdateForm from './components/UpdateForm';//Import UpdateForm function component
-import Container from 'react-bootstrap/Container';//Import Bootstrap Container
-import Row from 'react-bootstrap/Row';//Import Bootstrap Row 
-import Col from 'react-bootstrap/Col';//Import Bootstrap Colomn
-import Button from 'react-bootstrap/Button';//Import Bootstrap button component
+import React, { useEffect, useState } from 'react';
+import './App.css';
+import Header from './components/Header';
+import Form from './components/Form';
+import UpdateForm from './components/UpdateForm';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 export default function App() {
   const [carData, setCarData] = useState({
@@ -25,7 +25,6 @@ export default function App() {
   const [newOwner, setNewOwner] = useState('');
   const [carToUpdate, setCarToUpdate] = useState(null);
   const [foundCars, setFoundCars] = useState([]);
-  const [updateStatus, setUpdateStatus] = useState(null);
 
   useEffect(() => {
     async function fetchCars() {
@@ -47,7 +46,7 @@ export default function App() {
     }
 
     fetchCars();
-  }, []);
+  }, [carData]);
 
   const addCar = async () => {
     try {
@@ -126,11 +125,12 @@ export default function App() {
       );
 
       setUpdate(false);
-      setNewMake('');
-      setNewModel('');
-      setNewRegistration('');
-      setNewOwner('');
-
+      setCarData({
+        make: '',
+        model: '',
+        registration: '',
+        owner: '',
+      });
       console.log('Car details successfully updated');
     } catch (error) {
       console.error('Error updating car details:', error.message);
@@ -148,18 +148,19 @@ export default function App() {
         body: JSON.stringify({
           owner: 'oldOwnerValue',
           newOwner: 'newOwnerValue',
-          make: 'makeValue',
-          newMake: 'newMakeValue',
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update car details');
+        if (response.status === 404) {
+          throw new Error('No cars found for update');
+        } else {
+          throw new Error('Failed to update car details');
+        }
       }
 
       const updatedCars = await response.json();
-      setUpdateStatus(updatedCars);
-      console.log('Cars updated successfully');
+      console.log('Cars updated successfully', updatedCars);
     } catch (error) {
       console.error('Error updating cars:', error.message);
       setError('Error updating cars: ' + error.message);
@@ -182,7 +183,6 @@ export default function App() {
       setCars((prevCars) =>
         prevCars.filter((car) => car._id !== carId)
       );
-
       console.log('Car removed successfully');
     } catch (error) {
       setError('Error removing car: ' + error.message);
@@ -192,7 +192,6 @@ export default function App() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-  
     setCarData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -206,19 +205,19 @@ export default function App() {
 
   return (
     <>
-      <Container id='appContainer'>
+      <Container id="appContainer">
         <Header />
-        <section id='section1'>
+        <section id="section1">
           <Form
             carData={carData}
             handleInputChange={handleInputChange}
             addCar={addCar}
           />
         </section>
-        <section id='section2'>
-          <Row id='row5'>
-            <Col id='section2Heading'>
-              <h2 className='h2'>Fetched Cars:</h2>
+        <section id="section2">
+          <Row id="row5">
+            <Col id="section2Heading">
+              <h2 className="h2">Fetched Cars:</h2>
             </Col>
           </Row>
           <div>
@@ -233,14 +232,14 @@ export default function App() {
                   <label>
                     <p>NEW OWNER:</p>
                     <input
-                      type='text'
-                      name='newOwner'
+                      type="text"
+                      name="newOwner"
                       value={newOwner}
                       onChange={handleInputChange}
                     />
                   </label>
 
-                  <Button type='submit' variant='primary'>
+                  <Button type="submit" variant="primary">
                     UPDATE MULTIPLE CARS
                   </Button>
                 </Col>
@@ -249,33 +248,33 @@ export default function App() {
           </div>
 
           {isLoaded ? (
-            <ul id='list'>
+            <ul id="list">
               {cars.map((car) => (
-                <li key={car._id} className='carsList'>
-                  <Row id='row6'>
-                    <Col className='carData'>
-                      <label className='dataLabel'>MAKE:</label>
-                      <p className='outputText'>{car.make} </p>
+                <li key={car._id} className="carsList">
+                  <Row id="row6">
+                    <Col className="carData">
+                      <label className="dataLabel">MAKE:</label>
+                      <p className="outputText">{car.make} </p>
                     </Col>
-                    <Col className='carData'>
-                      <label className='dataLabel'>MODEL:</label>
-                      <p className='outputText'>{car.model}</p>
+                    <Col className="carData">
+                      <label className="dataLabel">MODEL:</label>
+                      <p className="outputText">{car.model}</p>
                     </Col>
                     <Col></Col>
                   </Row>
-                  <Row id='row7'>
-                    <Col className='carData'>
-                      <label className='dataLabel'>REGISTRATION:</label>
-                      <p className='outputText'>{car.registration}</p>
+                  <Row id="row7">
+                    <Col className="carData">
+                      <label className="dataLabel">REGISTRATION:</label>
+                      <p className="outputText">{car.registration}</p>
                     </Col>
-                    <Col className='carData'>
-                      <label className='dataLabel'>OWNER:</label>
-                      <p className='outputText'>{car.owner}</p>
+                    <Col className="carData">
+                      <label className="dataLabel">OWNER:</label>
+                      <p className="outputText">{car.owner}</p>
                     </Col>
                     <Col>
                       <Button
-                        variant='primary'
-                        id='removeBtn'
+                        variant="primary"
+                        id="removeBtn"
                         onClick={() => {
                           removeCar(car._id);
                         }}
@@ -284,12 +283,12 @@ export default function App() {
                       </Button>
                     </Col>
                   </Row>
-                  <Row className='row8'>
-                    <Col className='updateOpt'>
+                  <Row className="row8">
+                    <Col className="updateOpt">
                       <Button
-                        variant='primary'
+                        variant="primary"
                         onClick={() => updateCar(car._id)}
-                        id='toggleUpdate'
+                        id="toggleUpdate"
                       >
                         {update && carToUpdate === car._id
                           ? 'EXIT UPDATE'
@@ -297,7 +296,7 @@ export default function App() {
                       </Button>
                     </Col>
                   </Row>
-                  <div className='update'>
+                  <div className="update">
                     {update && carToUpdate === car._id && (
                       <UpdateForm
                         newMake={newMake}
@@ -318,20 +317,18 @@ export default function App() {
           ) : (
             <p>Loading...</p>
           )}
-
           {error && <p>{error}</p>}
         </section>
-
-        <section id='section3'>
+        <section id="section3">
           <Row>
             <Col>
-              <h2 className='h2'>CARS OLDER THAN 5 YEARS</h2>
+              <h2 className="h2">CARS OLDER THAN 5 YEARS</h2>
             </Col>
           </Row>
-          <Row id='row12'>
+          <Row id="row12">
             <Col></Col>
-            <Col id='findCarsCol'>
-              <Button variant='primary' onClick={findCars} id='findBtn'>
+            <Col id="findCarsCol">
+              <Button variant="primary" onClick={findCars} id="findBtn">
                 DISPLAY
               </Button>
             </Col>
@@ -339,26 +336,26 @@ export default function App() {
           </Row>
           <ul>
             {foundCars.map((foundCar) => (
-              <li className='carsList' key={foundCar._id}>
-                <Row id='row13'>
-                  <Col className='carData'>
-                    <label className='dataLabel'>MAKE:</label>
-                    <p className='outputText'>{foundCar.make} </p>
+              <li className="carsList" key={foundCar._id}>
+                <Row id="row13">
+                  <Col className="carData">
+                    <label className="dataLabel">MAKE:</label>
+                    <p className="outputText">{foundCar.make} </p>
                   </Col>
-                  <Col className='carData'>
-                    <label className='dataLabel'>MODEL:</label>
-                    <p className='outputText'>{foundCar.model}</p>
+                  <Col className="carData">
+                    <label className="dataLabel">MODEL:</label>
+                    <p className="outputText">{foundCar.model}</p>
                   </Col>
                   <Col></Col>
                 </Row>
-                <Row className='row14'>
-                  <Col className='carData'>
-                    <label className='dataLabel'>REGISTRATION:</label>
-                    <p className='outputText'>{foundCar.registration}</p>
+                <Row className="row14">
+                  <Col className="carData">
+                    <label className="dataLabel">REGISTRATION:</label>
+                    <p className="outputText">{foundCar.registration}</p>
                   </Col>
-                  <Col className='carData'>
-                    <label className='dataLabel'>OWNER:</label>
-                    <p className='outputText'>{foundCar.owner}</p>
+                  <Col className="carData">
+                    <label className="dataLabel">OWNER:</label>
+                    <p className="outputText">{foundCar.owner}</p>
                   </Col>
                   <Col></Col>
                 </Row>
