@@ -2,8 +2,7 @@
 
 ![image](https://github.com/laraklopper/LT8-Data-Interaction/assets/135839853/d1c85145-f4d0-45ff-8bc2-d0a9ba946435)
 
-
-
+## DIFFERENCES
 
 | Feature                   | JSON                                  | BSON                                           |
 |---------------------------|---------------------------------------|------------------------------------------------|
@@ -44,3 +43,7 @@ large datasets or when performance is critical.
 **JSON:** is commonly used for configuration files, APIs, and data interchange between systems where human readability is important. 
 
 **BSON:** is commonly used in databases (especially MongoDB, which uses BSON natively), where efficiency in terms of storage and processing is crucial.
+
+## REFERENCES
+
+- https://www.couchbase.com/resources/concepts/json-vs-bson/#:~:text=text%3A
