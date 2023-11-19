@@ -1,30 +1,46 @@
 # DIFFERENCE BETWEEN JSON AND BSON 
 
-JavaScript Object Notation('JSON') and BSON (Binary JSON) are both data interchange formats used to represent structured data in a human-readable and machine-readable way. 
-They are closely related, but BSON is an extension of JSON that adds additional data types and supports binary data for more efficient serialization and deserialization.
+![image](https://github.com/laraklopper/LT8-Data-Interaction/assets/135839853/d1c85145-f4d0-45ff-8bc2-d0a9ba946435)
 
-## DATA TYPES
 
-JSON supports a limited set of data types, including strings, numbers, booleans, arrays, objects, and null. However, JSON lacks specific types for binary data and dates.
 
-BSON extends the data types supported by JSON and includes additional types such as binary data, date, timestamp, regular expression, and more. 
-This makes BSON more suitable for representing a wider range of data types.
 
-## BINARY FORMAT
+| Feature                   | JSON                                  | BSON                                           |
+|---------------------------|---------------------------------------|------------------------------------------------|
+| **Representation**        | Text-based                            | Binary                                         |
+| **Data Types**            | Basic types (string, number, boolean) | Extended types (binary, date, regex, etc.)      |
+| **Efficiency**            | Less compact, slower serialization    | More compact, faster serialization              |
+| **Serialization/Deserialization** | Simple, built-in support in many languages | Requires specific libraries/drivers           |
+| **Usage**                 | Configuration files, APIs, data interchange | Databases (MongoDB, etc.), efficient storage   |
+| **Human Readability**     | Human-readable, easy to write and read | Not human-readable due to binary representation|
+| **Compatibility**        | Widely supported                      | Well-supported in MongoDB, may be limited elsewhere |
 
-JSON is a text-based format, which means it uses human-readable characters to represent data. 
-While this makes it easy for humans to read and write, it can be less efficient for storage and transmission, especially when dealing with large amounts of binary data.
+### FORMAT
 
-BSON, on the other hand, is a binary representation of JSON-like documents. 
-This binary format allows for more compact storage and faster serialisation/deserialisation, making it more efficient for certain use cases, such as when dealing with 
+**JSON:** is a text-based format, which means it uses human-readable characters to represent data.  While this makes it easy for humans to read and write, it can be less efficient for storage and transmission, especially when dealing with large amounts of binary data.
+
+**BSON:** Binary representation of JSON-like documents. This binary format allows for more compact storage and faster serialisation/deserialisation, making it more efficient for certain use cases, such as when dealing with 
 large datasets or when performance is critical.
 
-## SIZE
-JSON documents tend to be larger in size compared to equivalent BSON documents due to the additional overhead of human-readable characters.
+### DATA TYPES
 
-BSON is more compact as it uses a binary format, resulting in smaller document sizes.
-## USAGE
+**JSON:** Supports strings, numbers, null, arrays, and objects
 
-JSON is commonly used for configuration files, APIs, and data interchange between systems where human readability is important. 
+**BSON:** Supports additional data types such as binary data and date types
 
-BSON is commonly used in databases (especially MongoDB, which uses BSON natively), where efficiency in terms of storage and processing is crucial.
+
+### SIZE
+**JSON:** Text-based encoding of raw, uncompressed JSON can lead to larger documents due to the additional overhead of human-readable characters, but JSON also can be compressed
+
+**BSON:** is more compact as it uses a binary format, resulting in smaller document sizes. Metadata can also increase the overall size
+
+### METADATA
+**JSON:** Minimal metadata, which can limit context and require additional processing to determine data types
+
+**BSON:** Includes additional metadata and type information, which increases document size but provides richer context for data
+
+### USAGE
+
+**JSON:** is commonly used for configuration files, APIs, and data interchange between systems where human readability is important. 
+
+**BSON:** is commonly used in databases (especially MongoDB, which uses BSON natively), where efficiency in terms of storage and processing is crucial.
