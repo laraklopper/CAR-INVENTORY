@@ -69,9 +69,11 @@ const updateById = async (req, res) => {//Define an async function to update a s
     try {
         // Find and update the car 
         const updatedCar = await Car.findByIdAndUpdate(
+            //Use `await` to asynchronously find a car by its ID (`_id`) and update its properties using `Car.findByIdAndUpdate`.
             _id,
             { $set: req.body }, // Update the car with the data in the request body
             { new: true }// Return the updated car instead of the original one
+            //`{ new: true }` option returns the updated car rather than the original one.
         );
      
         //Conditional rendering to check if the car is found
@@ -109,31 +111,37 @@ const updateMultipleCars = async (req, res) => {//Define an async function to up
         console.log('New Owner:', newOwner);
         
         // Update the cars based on the filter criteria
+        //Use updateMany to update multiple cars in the database based on a certain criteria
         await Car.updateMany( 
             //Criteria for car make
             { make: oldMake },
-            { $set: { make: newMake } }
+            { $set: { make: newMake } },
+            {new : true}
         );
         
         await Car.updateMany(
             //Criteria for car model
             { model: oldModel },
-            { $set: { model: newModel } }
+            { $set: { model: newModel } },
+            {new : true}
         );
         
         await Car.updateMany(
             //Criteria for car registration
             { registration: oldRegistration },
-            { $set: { registration: newRegistration } }
+            { $set: { registration: newRegistration } },
+            {new : true}
         );
         
         await Car.updateMany(
             //Criteria for car owner
             { owner: oldOwner },
-            { $set: { owner: newOwner } }
+            { $set: { owner: newOwner } },
+            {new : true}
         );
 
         // Find and return the updated cars
+        // After updating the cars, it queries the database to fetch the cars that have been updated based on the new values.
         const updatedCars = await Car.find({
             make: newMake,
             model: newModel,
@@ -150,6 +158,33 @@ const updateMultipleCars = async (req, res) => {//Define an async function to up
     }
 };
 
+// const updateMultipleCars = async (req, res) => {
+//     try {
+//         const oldOwner = req.body.owner
+//         const newOwner = req.body.newOwner
+     
+//         console.log('Old Owner:', oldOwner);
+//         console.log('New Owner:', newOwner);
+     
+//         const updatedCar = await Car.updateMany(
+        //Use the `Car.updateMany()` method with a query to find cars with the old owner and an update to set the new owner.
+//             { owner: oldOwner },
+//             { $set: { owner: newOwner } },
+//             { new: true }
+//         );
+
+//         if (!updatedCar) {
+//             return res.status(404).json({ error: 'No cars found for update' });
+//         }
+
+//         const updatedCars = await Car.find({ owner: newOwner });
+//         res.json(updatedCars);
+
+//     } catch (error) {
+//         console.error('Error updating cars', error.message);
+//         res.status(500).send({ error: 'Internal server error' });
+//     }
+// };
 //--------------DELETE REQUESTS---------------------
 //Controller function to remove one car
 const removeById = async (req, res) => {//Define an async function to remove a car from the database
