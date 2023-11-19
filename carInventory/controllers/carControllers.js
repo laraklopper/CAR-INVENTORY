@@ -12,9 +12,11 @@ const findAllCars = async function (req, res) {//Define an aysnc function to fet
         // Handle errors during the database query or processing
         console.error('Error fetching cars', error.message);//Log an error message in the console for debugging purposes.
         res.status(500).send('Internal server Error');//Send a 500 status code, and an error message
+        //The HTTP 500 (Internal Server Error) server error response code indicates that the server encountered an 
+        // unexpected condition that prevented it from fulfilling the request.
     }
 };
-//
+
 //-----------------POST REQUEST----------------------------------
 // Controller function to create a new car
 const addCar = async function (req, res) {//Define an async function to add a new car 
@@ -23,7 +25,7 @@ const addCar = async function (req, res) {//Define an async function to add a ne
         await newCar.save(); // Save the new car to the database
 
         res.status(201).json(newCar);// Respond with the newly created car and a 201 status code (Created)
-        //(The HTTP 201 Created success status response code indicates that the request has succeeded and has led to the creation of a resource.)
+        //The HTTP 201 (Created) success status response code indicates that the request has succeeded and has led to the creation of a resource.
     } 
     catch (error) {
         // Handle errors 
