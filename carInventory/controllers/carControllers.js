@@ -5,7 +5,7 @@ const Car = require('../models/carSchema');// Import the Car model representing 
 const findAllCars = async function (req, res) {//Define an aysnc function to fetch all cars from the database
     try {
         // Fetch all cars from the database based on any optional query parameters in req.query
-        const cars = await Car.find(req.body);
+        const cars = await Car.find(req.body);//Fetch all cars based on the query parameters in the request body using `Car.find()`.
         res.json(cars);// Respond with the list of cars
     } 
     catch (error) {
@@ -14,7 +14,7 @@ const findAllCars = async function (req, res) {//Define an aysnc function to fet
         res.status(500).send('Internal server Error');//Send a 500 status code, and an error message
     }
 };
-
+//
 //-----------------POST REQUEST----------------------------------
 // Controller function to create a new car
 const addCar = async function (req, res) {//Define an async function to add a new car 
