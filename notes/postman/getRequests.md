@@ -7,7 +7,7 @@
 http://localhost:3001/findAllCars
 ``
 
-**OUTPUT**
+**RESPONSE:**
 ```
 [
     {
