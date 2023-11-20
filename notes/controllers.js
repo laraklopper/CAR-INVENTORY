@@ -33,15 +33,17 @@ const addCar = async function (req, res) {//Define an async function to add a ne
 //Controller function to find cars older than 5 years
 const findByModel = async (req, res) => {//Define an async function to find cars older than 5 years from the database
     try {
-        const model = parseInt(req.body.model);
-        const cars = await Car.find({ model: { $lte: 2018 } });
-
+        const currentYear = new Date().getFullYear();// Get the current year to calculate the threshold for models older than 5 years
+        const cars = await Car.find({ model: { $lte: 2018 } });// Use the Car model to find cars where the 'model' field is less than or equal to 5 years ago
                 // Use the Car model to find cars where the 'model' field is less than or equal to 2018
+        
+        // Conditional rendering to check whether cars exist based on the specified criteria
         if (!cars || cars.length === 0) {
+            // Respond with a 404 status code and a JSON object indicating no cars were found
             return res.status(404).json({ error: "No cars found" });
         }
 
-        res.json(cars);
+        res.json(cars);// Respond with a JSON array of cars that are older than 5 years
     } 
     catch (error) {
         //Handle errors
@@ -53,7 +55,7 @@ const findByModel = async (req, res) => {//Define an async function to find cars
 //-----------------PUT REQUESTS------------------------
 // Controller function to update one single car by Id
 const updateById = async (req, res) => {
-    const { _id } = req.params;
+    const { _id } = req.params;// Extract the 'make' parameter from the request URL
 
     try {
           // Find and update the car 
@@ -91,16 +93,22 @@ const updateMultipleCars = async (req, res) => {//Define an async function to up
         console.log('New Owner:', newOwner);
 
     // Update the cars based on the filter criteria
-        const { nModified } = await Car.updateMany(
+        const updatedCar= await Car.updateMany(
             { owner: oldOwner },
-            { $set: { owner: newOwner } }
+            { $set: { owner: newOwner } },
+            {new: true}
         );
 
+        // Conditional rendering to check if any document was updated by its  owner
          if (nModified === 0) {
+              /*The nModified property checks represents the number of documents to be modified during the update.
+           This condition checks if no documents were modified. */
             // If no cars were found for update, respond with a 404 status code and an error message
             return res.status(404).json({ error: 'No cars found for update' });
         }
-
+        
+        console.log(updatedCar);
+        
         // Find and return the updated cars
         const updatedCars = await Car.find({ owner: newOwner });
         res.json(updatedCars);
