@@ -55,11 +55,7 @@ module.exports ={
   updateMultipleCars
 }
 ````````
-### $replaceAll (aggregation) 
-```
 
-
-```
 ## REACT REQUEST
 ```
   //Function to update the details of multiple cars
