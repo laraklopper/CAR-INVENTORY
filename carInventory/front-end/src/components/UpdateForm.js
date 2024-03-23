@@ -6,15 +6,15 @@ import Row from 'react-bootstrap/Row';//Import bootstap Row
 //UpdateForm function component
 export default function UpdateForm({//Export default update form function component
   //=======PROPS PASSED FROM THE PARENT COMPONENT==========
-  newMake,
-  setNewMake, 
-  newModel, 
-  setNewModel, 
-  newRegistration, 
-  setNewRegistration, 
-  newOwner, 
-  setNewOwner, 
-  updateCarDetails
+  newMake,//State variable to store updated car make
+  setNewMake, //State variable to store updated car make
+  newModel, //State variable to store updated car model
+  setNewModel, //State variable to store updated car model
+  newRegistration, // State variable to store updated car registration
+  setNewRegistration, // State variable to store updated car registration
+  newOwner, // State variable to store updated car owner
+  setNewOwner, // State variable to store updated car owner
+  updateCarDetails// Function to update car details for a single car
   }) {
 
 
@@ -88,7 +88,6 @@ export default function UpdateForm({//Export default update form function compon
                   />
                 </label>
               </Col>   
-              
           </Row>
       {/* Row10 */}
           <Row>
@@ -99,7 +98,5 @@ export default function UpdateForm({//Export default update form function compon
               </Col>
           </Row>
               </form>
-     
-    
   )
 }
