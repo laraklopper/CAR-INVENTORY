@@ -6,9 +6,10 @@ import Button from 'react-bootstrap/Button';//Import Bootstrap button component
 //Form function component
 export default function Form({//Export Default form function component
     //=======PROPS PASSED FROM THE PARENT COMPONENT==========
-    carData, 
-    handleInputChange, 
-    addCar}) {
+    carData, // State to manage the form data for adding a new car
+    handleInputChange,  // Function to handle input changes in the form
+    addCar// Function to add a new car
+}) {
 
     //=======================JSX RENDERING===========
     
