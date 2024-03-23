@@ -1,0 +1,246 @@
+/* Body */
+body{
+  margin: 0px;
+  padding: 0px;
+  display: block;
+    background-color: #69685C;
+}
+/* root */
+#root{
+  background-color: #69685C;
+  margin: 10px;
+    display: flex;
+    justify-content: center;
+}
+/* Container */
+#appContainer{
+  margin: 0px;
+  padding: 0px;
+  background-color: silver;
+}
+/* Header */
+#header{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 15px;
+  text-align: center;
+  background-color: #b3b3b3;
+  font-family: cursive;
+}
+.h1{
+  font-weight: bold;
+  color: #404040;
+}
+/* section 1*/
+#section1{
+  margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 15px;
+    background-color: #999999;
+}
+.h2{
+  text-align: center;
+}
+/* Form */
+.formRow{
+      margin-top: 0px;
+        margin-left: 0px;
+        margin-bottom: 5px;
+        margin-right: 0px;
+        padding: 0px;
+        display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+        
+}
+/* input form */
+.formCol{
+  margin: 0px;
+  padding: 5px;
+}
+.formLabel{
+  width: 100%;
+}
+.labelText{
+  float: left;
+  font-weight: bold;
+}
+.formInput{
+  margin-left: 5px;
+}
+/* section2 */
+#section2{
+      margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #999999;
+        margin-left: 10px;
+        margin-right: 10px;
+        display: block;
+        padding: 10px;
+}
+
+#row5{
+  margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+    display: flex;
+    justify-content: center;
+}
+/* FORM OUTPUT*/
+/* Car List */
+.carsList{
+  background-color: #bfbfbf;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 5px;
+}
+
+/* Row 6 */
+#row6{
+  margin: 0px;
+    display: flex;
+    align-items: baseline;
+    flex-direction: row;
+    padding: 0px;
+}
+
+.carData {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  margin: 0px;
+}
+.dataLabel {
+  font-weight: bold;
+  margin-right: 5px;
+  font-size: 18px;
+  display: flex;
+}
+#row7{
+  margin: 0px;
+    display: flex;
+    align-items: baseline;
+    flex-direction: row;
+    padding: 0px;
+}
+#row8{
+  margin-top: 0px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 0px;
+    display: flex;
+}
+.updateCol{
+  display: block;
+}
+.outputText{
+  font-family: sans-serif;
+   font-size: 18px;
+   margin: 0px;
+   padding: 2px;
+}
+/* Update form */
+.updateForm{
+  background-color:#999999;
+  padding: 10px;
+}
+.updateOpt{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+
+}
+.updateLabel{
+  display: flex;
+  align-items: flex-end;
+}
+.changeInput{
+  display: inline;
+  float: right;
+  margin: 10px;
+}
+#row9{
+  margin-top: 5px;
+  margin-left: 5px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    
+}
+.updateBtnCol{
+  display: flex;
+  justify-content: center;
+}
+/* Section 3 */
+#section3{
+  margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #999999;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: block;
+    padding: 10px;
+}
+#section4 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #999999;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: block;
+  padding: 10px;
+}
+#updateMultiple{
+  margin-top:5px;
+}
+#row11{
+  display: flex;
+    margin-top: 5px;
+    margin-bottom: 2px;
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 100%;
+}
+#row12{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+#findCarsCol{
+  display: contents;
+}
+#findBtn{
+  align-self: center;
+}
+#row13{
+  margin: 0px;
+  display: flex;
+  align-items: baseline;
+  flex-direction: row;
+  padding: 0px;
+}
+#row14{
+  margin: 0px;
+  display: flex;
+  align-items: baseline;
+  flex-direction: row;
+  padding: 0px;
+}
+#updateMultipleForm{
+  display: block;
+  margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0px;
+}
