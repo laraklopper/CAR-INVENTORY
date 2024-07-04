@@ -15,22 +15,6 @@ const findAllCars = async function (req, res) {//Define an aysnc function to fet
     }
 };
 
-//-----------------POST REQUEST----------------------------------
-// Controller function to create a new car
-const addCar = async function (req, res) {//Define an async function to add a new car 
-    try {
-        const newCar = new Car(req.body);// Create a new Car instance with the request body and save it to the database
-        await newCar.save(); // Save the new car to the database
-
-        res.status(201).json(newCar);// Respond with the newly created car and a 201 status code (Created)
-    } 
-    catch (error) {
-        // Handle errors during the database query or processing
-        console.error('Error adding the new car', error.message);//Log an error message in the console for debugging purposes.
-        res.status(500).send('Internal server error');//Send a 500 (Internal Server Error)status code and an error message
-    }
-};
-
 //Controller function to find cars older than 5 years
 const findByModel = async (req, res) => {//Define an async function to find cars older than 5 years from the database
     try {
@@ -53,6 +37,23 @@ const findByModel = async (req, res) => {//Define an async function to find cars
         res.status(500).send('Internal server Error');// Respond with a 500 (Internal server error) status code and an error message
     }
 }
+
+//-----------------POST REQUEST----------------------------------
+// Controller function to create a new car
+const addCar = async function (req, res) {//Define an async function to add a new car 
+    try {
+        const newCar = new Car(req.body);// Create a new Car instance with the request body and save it to the database
+        await newCar.save(); // Save the new car to the database
+
+        res.status(201).json(newCar);// Respond with the newly created car and a 201 status code (Created)
+    } 
+    catch (error) {
+        // Handle errors during the database query or processing
+        console.error('Error adding the new car', error.message);//Log an error message in the console for debugging purposes.
+        res.status(500).send('Internal server error');//Send a 500 (Internal Server Error)status code and an error message
+    }
+};
+
 
 //-----------------PUT REQUESTS------------------------
 // Controller function to update one single car by Id
