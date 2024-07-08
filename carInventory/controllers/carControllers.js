@@ -41,6 +41,7 @@ const findByModel = async (req, res) => {//Define an async function to find cars
 //-----------------POST REQUEST----------------------------------
 // Controller function to create a new car
 const addCar = async function (req, res) {//Define an async function to add a new car 
+    // console.log(req.body)//Log the request body in the console for debugging purposes
     try {
         const newCar = new Car(req.body);// Create a new Car instance with the request body and save it to the database
         await newCar.save(); // Save the new car to the database
