@@ -24,6 +24,8 @@ any traditional relational database table. The data is stored as BSON. Instead o
 A collection consist of a set of documents & a document consists 
 of key-value pairs which are the basic unit of data in MongoDB.
 
+![image](https://github.com/user-attachments/assets/f76a54f7-18e3-4fe2-bc80-d075aa2801ae)
+
 ## REFERENCES
 - https://www.npmjs.com/package/dotenv
 - https://expressjs.com/en/resources/middleware.html
