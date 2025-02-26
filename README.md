@@ -22,7 +22,7 @@ To application uses `nodemon` express.js middleware to start the programme. To s
 MongoDB is a NoSQL database and offers a scalable and adaptable way to store and retrieve data. MongoDB is used to store large amounts of data without 
 any traditional relational database table. The data is stored as BSON. Instead of rows & columns, MongoDB used collections & documents to store data. 
 A collection consist of a set of documents & a document consists 
-of key-value pairs which are the basic unit of data in MongoDB.
+of key-value (fied/value) pairs which are the basic unit of data in MongoDB.
 
 ![image](https://github.com/user-attachments/assets/f76a54f7-18e3-4fe2-bc80-d075aa2801ae)
 
