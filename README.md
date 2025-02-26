@@ -32,8 +32,10 @@ To connect a Node.js application to MongoDB, use a library called Mongoose.
 ```
 const mongoose = require("mongoose");
 ```
-
+The `mongoose.connect()` method to connect the database. The arguement passed into the `connect()` method is the connection string for the database.
 ```
+// mongoose.Promise = global.Promise//use navtive promises
+
 mongoose.connect(uri, {
     useNewUrlParser: true,// Use the new URL parser
     useUnifiedTopology: true,// Use the new Server Discover and Monitoring engine
@@ -44,6 +46,7 @@ mongoose.connect(uri, {
     })
     .catch((err) => {//Execute if a connection error occurs
         console.error('Error connecting to MongoDB', err);//Log an error message if there's an issue connecting to MongoDB.
+        process.exit(1);// Terminate the Node.js process with an exit code of 1, indicating an error
     });
 ```
 
