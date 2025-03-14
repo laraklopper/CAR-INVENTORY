@@ -34,7 +34,8 @@ const mongoose = require("mongoose");
 ```
 The `mongoose.connect()` method to connect the database. The arguement passed into the `connect()` method is the connection string for the database.
 ```
-// mongoose.Promise = global.Promise//use navtive promises
+//==============CONNECT TO MONGODB===============
+mongoose.Promise = global.Promise//use navtive promises
 
 mongoose.connect(uri, {
     useNewUrlParser: true,// Use the new URL parser
@@ -48,6 +49,19 @@ mongoose.connect(uri, {
         console.error('Error connecting to MongoDB', err);//Log an error message if there's an issue connecting to MongoDB.
         process.exit(1);// Terminate the Node.js process with an exit code of 1, indicating an error
     });
+
+//==================MONGODB EVENT HANDLERS=======================
+// Set up an event listener for the 'error' event on the Mongoose connection
+// Function executed when there is an error in the MongoDB connection
+mongoose.connection.on('error', async (error) => {
+    console.error('Could not connect to the database. Exiting now...', error);
+    process.exit(1);
+});
+// Set up an event listener for the 'open' event on the Mongoose connection
+// Function executed when the MongoDB connection is successfully open
+mongoose.connection.once('open', async () => {
+    console.log('Successfully connected to database');
+});
 ```
 
 
