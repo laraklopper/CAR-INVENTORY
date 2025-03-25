@@ -38,8 +38,8 @@ The `mongoose.connect()` method to connect the database. The arguement passed in
 mongoose.Promise = global.Promise//use navtive promises
 
 mongoose.connect(uri, {
-    useNewUrlParser: true,// Use the new URL parser
-    useUnifiedTopology: true,// Use the new Server Discover and Monitoring engine
+    //useNewUrlParser: true,// Use the new URL parser
+    //useUnifiedTopology: true,// Use the new Server Discover and Monitoring engine
     dbName: database, // Specify the name of the MongoDB database
 })
     .then(() => {//Execute when the connection is successful.
