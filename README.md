@@ -36,7 +36,10 @@ The `mongoose.connect()` method to connect the database. The arguement passed in
 ```
 //==============CONNECT TO MONGODB===============
 mongoose.Promise = global.Promise//use navtive promises
-
+/*
+Ensures Mongoose uses native JavaScript Promises for 
+asynchronous operations instead of its deprecated promise library.
+*/
 mongoose.connect(uri, {
     //useNewUrlParser: true,// Use the new URL parser
     //useUnifiedTopology: true,// Use the new Server Discover and Monitoring engine
@@ -49,7 +52,28 @@ mongoose.connect(uri, {
         console.error('Error connecting to MongoDB', err);//Log an error message if there's an issue connecting to MongoDB.
         process.exit(1);// Terminate the Node.js process with an exit code of 1, indicating an error
     });
+```
 
+```
+// Function to establish connection to MongoDB
+const connectDB = async () => {
+    try {
+        await mongoose.connect(uri, {
+            dbName: database, // Specify the database name
+            serverSelectionTimeoutMS: 5000, // Timeout for selecting a server (5 sec)
+            connectTimeoutMS: 10000, // Connection timeout (10 sec)
+        });
+        //Log a success message in the console for debugging purposes
+        console.log("Successfully connected to MongoDB");
+    } catch (error) {
+        //Log an error message in the console for debugging purposes
+        console.error("Error connecting to MongoDB database");
+        process.exit(1); // Exit the process on failure
+    }
+};
+
+```
+```
 //==================MONGODB EVENT HANDLERS=======================
 // Set up an event listener for the 'error' event on the Mongoose connection
 // Function executed when there is an error in the MongoDB connection
@@ -62,7 +86,33 @@ mongoose.connection.on('error', async (error) => {
 mongoose.connection.once('open', async () => {
     console.log('Successfully connected to database');
 });
+/*
+// Event: When the database gets disconnected
+mongoose.connection.on('disconnected', () => {
+    //Log a message to the console with the warning log level for debugging purposes
+    console.warn('MongoDB disconnected. Reconnecting...');
+    //connectDB(); // Attempt to reconnect automatically
+});
+// Event: When MongoDB successfully reconnects
+mongoose.connection.on('reconnected', () => {
+    //Log a success message in the console for debugging purposes
+    console.log('MongoDB reconnected');
+});
+*/
 ```
+### serverSelectionTimeoutMS
+
+`serverSelectionTimeoutMS` controls how long the MongoDB Node.js driver will attempt to retry any operation before erroring out, including the initial connection, like `mongoose.connect()` and any operations
+that make requests to MongoDB By default, serverSelectionTimeoutMS is 30000 (30 seconds). This means that, for example, if you call mongoose.connect() 
+when your standalone MongoDB server is down, your mongoose.connect() call will only throw an error after 30 seconds.
+### MONGOOSE CONNECTION EVENTS
+
+| EVENT         | Exlanation                                      |  CODE                                          |
+|---------------|-------------------------------------------------|------------------------------------------------|
+|'error'        |If an error occurs while connecting to MongoDB   | mongoose.connection.on('error', () => {        |
+|'disconnected' |When the database gets disconnected              | mongoose.connection.on('disconnected', () => {   |
+|'reconnected'  |When MongoDB successfully reconnects             | mongoose.connection.on('reconnected', () => {  |
+|'open'         |when the MongoDB connection is successfully open | mongoose.connection.once('open', () => {       |
 
 
 ## REFERENCES
@@ -73,3 +123,4 @@ mongoose.connection.once('open', async () => {
 - https://masteringjs.io/tutorials/mongoose/save
 - https://www.tutorialspoint.com/mongodb/index.htm
 - https://www.mongodb.com/docs/manual/introduction/
+- https://mongoosejs.com/docs/connections.html
