@@ -33,6 +33,7 @@ To connect a Node.js application to MongoDB, use a library called Mongoose.
 const mongoose = require("mongoose");
 ```
 The `mongoose.connect()` method to connect the database. The arguement passed into the `connect()` method is the connection string for the database.
+**Minimum needed to connect to the database running locally on the defaualt port:**
 ```
 //==============CONNECT TO MONGODB===============
 mongoose.Promise = global.Promise//use navtive promises
@@ -53,7 +54,7 @@ mongoose.connect(uri, {
         process.exit(1);// Terminate the Node.js process with an exit code of 1, indicating an error
     });
 ```
-
+**Example of a function to connect to the MongoDB database**
 ```
 // Function to establish connection to MongoDB
 const connectDB = async () => {
@@ -73,6 +74,13 @@ const connectDB = async () => {
 };
 
 ```
+**`ServerSelectionTimeoutMS`**
+
+`serverSelectionTimeoutMS` controls how long the MongoDB Node.js driver will attempt to retry any operation before erroring out, including the initial connection, like `mongoose.connect()` and any operations
+that make requests to MongoDB By default, serverSelectionTimeoutMS is 30000 (30 seconds). This means that, for example, if you call mongoose.connect() 
+when your standalone MongoDB server is down, your mongoose.connect() call will only throw an error after 30 seconds.
+
+### MONGOOSE CONNECTION EVENTS
 ```
 //==================MONGODB EVENT HANDLERS=======================
 // Set up an event listener for the 'error' event on the Mongoose connection
@@ -100,12 +108,6 @@ mongoose.connection.on('reconnected', () => {
 });
 */
 ```
-### serverSelectionTimeoutMS
-
-`serverSelectionTimeoutMS` controls how long the MongoDB Node.js driver will attempt to retry any operation before erroring out, including the initial connection, like `mongoose.connect()` and any operations
-that make requests to MongoDB By default, serverSelectionTimeoutMS is 30000 (30 seconds). This means that, for example, if you call mongoose.connect() 
-when your standalone MongoDB server is down, your mongoose.connect() call will only throw an error after 30 seconds.
-### MONGOOSE CONNECTION EVENTS
 
 | EVENT         | Exlanation                                      |  CODE                                          |
 |---------------|-------------------------------------------------|------------------------------------------------|
