@@ -28,13 +28,29 @@ mongoose.connect(uri, {
 ```
 
 ## CONNECTION FUNCTIONS
+```
+/* Load environment variables from a .env 
+file using the dotenv package*/
+require("dotenv").config();
+const mongoose = require("mongoose");//Import the Mongoose library
 
+//Extract Environmental Variables
+const uri = process.env.DATABASE_URL;//Extract the database URL from the enviromental variables
+const database = process.env.DATABASE_NAME;//Extract the database URL from the enviromental variables
+
+//=====CHECK IF ALL THE ENVIRONMENTAL VARIABLES A PRESENT=========
+// Conditional rendering to check if the environmental variables are missing
+if (!uri || !database) {
+    console.error("Missing environment variables: DATABASE_URL or DATABASE_NAME");
+    process.exit(1);
+}
+```
 ```
 mongoose.Promise = global.Promise;// Set Mongoose to use native JavaScript Promises
 
 /*Define an asynchronous function to connect to 
 MongoDB using Mongoose */
-const connectDB = async (re) => {
+const connectDB = async () => {
     try {
         await mongoose.connect(uri, {
             dbName: database,// Specify the database name to connect to
