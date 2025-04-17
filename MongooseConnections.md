@@ -28,6 +28,7 @@ mongoose.connect(uri, {
 ```
 
 ## CONNECTION FUNCTIONS
+**Import middleware and enviromental variables**
 ```
 /* Load environment variables from a .env 
 file using the dotenv package*/
@@ -45,6 +46,7 @@ if (!uri || !database) {
     process.exit(1);
 }
 ```
+**FUNCTIONS**
 ```
 mongoose.Promise = global.Promise;// Set Mongoose to use native JavaScript Promises
 
