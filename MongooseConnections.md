@@ -124,33 +124,39 @@ Mongoose provides event hooks on the mongoose.connection object to help you moni
 
 ```
 const mongoose = require('mongoose');
-
+```
+```
 // Event listener triggered on initial connection to the MongoDB server
 mongoose.connection.on('connected', () => {
   console.log('MongoDB connection established');
 });
-
+```
+```
 // Event listener triggered once when the connection is successfully opened
 mongoose.connection.once('open', () => {
   console.log('MongoDB connection open');
 });
-
+```
+```
 // Event listener triggered when the MongoDB connection is lost
 mongoose.connection.on('disconnected', () => {
   console.warn('MongoDB disconnected! Attempting to reconnect...');
 });
-
+```
+```
 // Event listener triggered when MongoDB reconnects after disconnection
 mongoose.connection.on('reconnected', () => {
   console.log('MongoDB reconnected!');
 });
-
+```
+```
 // Event listener triggered on MongoDB connection errors
 mongoose.connection.on('error', (err) => {
   console.error('MongoDB connection error:', err);
   process.exit(1)//Exit the process with a failure code
 });
-
+```
+```
 // Optional: detect when connection is closed
 db.on('close', () => {
   console.warn('MongoDB connection closed');
