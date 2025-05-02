@@ -29,22 +29,25 @@ if (!uri) {
     process.exit(1);// Exit the Node.js process with a non-zero exit code (1)
 }
 
-mongoose.Promise = global.Promise;// Set Mongoose to use Node's built-in promises
-
 //==============CONNECT TO MONGODB USING MONGOOSE=======================
+mongoose.Promise = global.Promise; // Set Mongoose to use Node's built-in promises
 
-mongoose.connect(uri, {
-    useNewUrlParser: true,// Use the new URL parser
-    useUnifiedTopology: true,// Use the new Server Discover and Monitoring engine
-    dbName: database, // Specify the name of the MongoDB database
-})
-    .then(() => {//Execute when the connection is successful.
-        console.log('Connected to MongoDB');//Log a success message when the connection is established.
-    })
-    .catch((err) => {//Execute if a connection error occurs
-        console.error('Error connecting to MongoDB', err);//Log an error message if there's an issue connecting to MongoDB.
-    });
 
+// Function to establish MongoDB connection
+const connectDB = async () => {// Define an async function to connect to MongoDB
+    try {
+        await mongoose.connect(uri, {
+            dbName: database,//Specify the database name
+            serverSelectionTimeoutMS: 5000,
+            connectTimeoutMS: 10000,
+        })
+        console.log("Successfully connected to MongoDB");//Log a success message in the console if the connection is successful
+
+    } catch (error) {
+        console.error("Error connecting to MongoDB", error);
+        process.exit(1)
+    }
+}
 //==============MONGO CONNECTION EVENT HANDLERS========================
 // Set up an event listener for the 'error' event on the Mongoose connection
 mongoose.connection.on('error', function (error) {// This function will be executed when there is an error in the MongoDB connection
@@ -72,7 +75,12 @@ app.post('/findByModel', carController.findByModel);//Route to find cars by mode
 app.put('/updateMultipleCars', carController.updateMultipleCars )//Route to update multiple cars
 
 //================START THE SERVER=========================
-// Start the Express server and listen on the specified port
-app.listen(port, () => {
-    console.log(`Server is running on ${port}`);// Log a message indicating that the server is running on the specified port.
-});
+// Start the server and listen on the specified port
+connectDB().then(() => {
+    app.listen(port, () => {
+        console.log(`Server is running on port: ${port}`);
+    })
+}).catch(err => {
+    console.error('Database connection failed:', err);
+    process.exit(1)
+})
