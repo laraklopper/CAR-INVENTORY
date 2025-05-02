@@ -38,14 +38,14 @@ const connectDB = async () => {// Define an async function to connect to MongoDB
     try {
         await mongoose.connect(uri, {
             dbName: database,//Specify the database name
-            serverSelectionTimeoutMS: 5000,
-            connectTimeoutMS: 10000,
+            serverSelectionTimeoutMS: 5000,// Fail connection if server is not found within 5 seconds
+            connectTimeoutMS: 10000,//	Max time (ms) to wait for a connection to be established
         })
         console.log("Successfully connected to MongoDB");//Log a success message in the console if the connection is successful
 
     } catch (error) {
         console.error("Error connecting to MongoDB", error);
-        process.exit(1)
+        process.exit(1);// Exit the Node.js process with a non-zero exit code (1)
     }
 }
 //==============MONGO CONNECTION EVENT HANDLERS========================
@@ -60,13 +60,23 @@ mongoose.connection.once('open', function () {// This function will be executed 
     console.log('Successfully connected to database');// Log a message indicating that the connection to the database was successful
 });
 
+//Function executed when the connection is lost
+mongoose.connection.on("disconnected", () => {
+    console.warn("MongoDB Disconnected! Reconnecting...");//Log a warning message in the if the connection is disconnected
+    connectDB();// Try to reconnect if the connection is lost
+});
+
+// Set up an event listener for the 'reconnected' event on the Mongoose connection
+mongoose.connection.on("reconnected", () => {
+    console.log("MongoDB Reconnected!"); // Log a message in the console if the connection is successfully reconnected
+});
+
 //======================SETUP MIDDLEWARE================================
 app.use(express.json());// Middleware to parse JSON in the request body
 app.use(cors());// Use the 'cors' middleware
 
 //=================API ROUTES===========================
 // API routes using the controller functions
-
 app.post('/addCar', carController.addCar); //route to add a car
 app.get('/findAllCars', carController.findAllCars);//Route to find all cars
 app.put('/updateById/:_id', carController.updateById);//Route to update a car by ID
@@ -82,5 +92,5 @@ connectDB().then(() => {
     })
 }).catch(err => {
     console.error('Database connection failed:', err);
-    process.exit(1)
+    process.exit(1);// Exit the Node.js process with a non-zero exit code (1)
 })
